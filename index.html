@@ -77,6 +77,14 @@
     border: none; border-radius: 10px;
   }
   button[disabled] { opacity: .6; cursor: default; }
+  /* El botón de descarga es un enlace, no un `button`: tiene que poder
+     abrirse en otra pestaña y copiarse con el botón derecho. */
+  a.descarga {
+    display: block; margin-top: 20px; padding: 14px;
+    font-size: 1rem; font-weight: 600; text-decoration: none;
+    color: var(--acento-texto); background: var(--acento);
+    border-radius: 10px;
+  }
   .fallo {
     margin-top: 14px; padding: 12px; border-radius: 10px;
     background: var(--fondo); color: var(--error); font-size: .92rem;
@@ -103,6 +111,11 @@
     <div class="fallo" id="fallo" hidden></div>
   </form>
 
+  <a class="descarga" id="descarga" hidden
+     href="https://github.com/cashtor/cashtor.github.io/releases/latest">
+    Descargar para Android
+  </a>
+
 </main>
 
 <script>
@@ -124,6 +137,7 @@
   var repetir = document.getElementById('repetir');
   var boton = document.getElementById('boton');
   var fallo = document.getElementById('fallo');
+  var descarga = document.getElementById('descarga');
 
   function pintar(icono, clase, tit, texto, puntos) {
     emoji.textContent = icono;
@@ -260,10 +274,21 @@
     pintar('🦫', 'acento', '¡Cuenta confirmada!',
       'Ya puedes volver a Cashtor y entrar con tu correo y tu contraseña.');
   } else {
-    // Alguien ha llegado aquí escribiendo la dirección a mano.
-    pintar('🦫', '', 'Cashtor',
-      'Esta página solo sirve para confirmar cuentas y cambiar contraseñas ' +
-      'desde los enlaces del correo.');
+    // Alguien ha llegado aquí escribiendo la dirección a mano, y esa es la
+    // dirección más corta que hay: **es la que Héctor va a decir en voz alta
+    // cuando un amigo le pregunte dónde se baja la aplicación** (22/08/2026).
+    // Antes ponía "esta página solo sirve para confirmar cuentas", que no le
+    // servía de nada a quien llegaba aquí a propósito.
+    pintar('🦫', 'acento', 'Cashtor',
+      'Las cuentas de casa, apuntadas en dos toques.',
+      [
+        'Descarga el archivo desde el móvil y ábrelo.',
+        'Android avisará de que no viene de Google Play: hay que darle ' +
+          'permiso una vez.',
+        'Al abrirla, crea tu cuenta con tu correo y confírmalo.',
+        'Después crea tu hogar, o espera a que te inviten a uno.',
+      ]);
+    descarga.hidden = false;
   }
 })();
 </script>
