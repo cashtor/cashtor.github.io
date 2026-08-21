@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cashtor</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --fondo: #f6f7f9;
+    --tarjeta: #ffffff;
+    --texto: #1a1c1e;
+    --suave: #5a5f66;
+    --borde: #d8dce1;
+    --campo: #ffffff;
+    --acento: #2f6f4f;
+    --acento-texto: #ffffff;
+    --aviso: #8a5a00;
+    --error: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #16181b;
+      --tarjeta: #1f2226;
+      --texto: #e7e9ec;
+      --suave: #a9b0b8;
+      --borde: #3a3f46;
+      --campo: #16181b;
+      --acento: #6fbf8e;
+      --acento-texto: #10281c;
+      --aviso: #e0b050;
+      --error: #f2b8b5;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    background: var(--fondo); color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55;
+  }
+  main {
+    width: 100%; max-width: 460px;
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .emoji { font-size: 56px; line-height: 1; }
+  h1 { font-size: 1.5rem; margin: 16px 0 8px; }
+  p { margin: 0 0 12px; color: var(--suave); }
+  p.principal { color: var(--texto); }
+  .pasos {
+    margin-top: 20px; padding: 16px;
+    background: var(--fondo); border-radius: 12px; text-align: left;
+  }
+  .pasos ol { margin: 0; padding-left: 20px; }
+  .pasos li { margin-bottom: 6px; color: var(--suave); }
+  .pasos li:last-child { margin-bottom: 0; }
+  form { margin-top: 20px; text-align: left; }
+  label { display: block; font-size: .9rem; margin-bottom: 6px; }
+  input[type=password] {
+    width: 100%; padding: 12px 14px; margin-bottom: 16px;
+    font-size: 1rem; font-family: inherit;
+    color: var(--texto); background: var(--campo);
+    border: 1px solid var(--borde); border-radius: 10px;
+  }
+  input[type=password]:focus { outline: 2px solid var(--acento); outline-offset: 1px; }
+  button {
+    width: 100%; padding: 14px; font-size: 1rem; font-family: inherit;
+    font-weight: 600; cursor: pointer;
+    color: var(--acento-texto); background: var(--acento);
+    border: none; border-radius: 10px;
+  }
+  button[disabled] { opacity: .6; cursor: default; }
+  .fallo {
+    margin-top: 14px; padding: 12px; border-radius: 10px;
+    background: var(--fondo); color: var(--error); font-size: .92rem;
+  }
+  .marca {
+    margin-top: 24px; font-size: .82rem; color: var(--suave);
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .acento { color: var(--acento); }
+  .aviso { color: var(--aviso); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="emoji" id="emoji">⏳</div>
+  <h1 id="titulo">Un momento…</h1>
+  <p class="principal" id="mensaje"></p>
+
+  <div class="pasos" id="pasos" hidden><ol id="lista"></ol></div>
+
+  <form id="formulario" hidden autocomplete="off">
+    <label for="clave">Contraseña nueva</label>
+    <input type="password" id="clave" autocomplete="new-password" minlength="6" required>
+    <label for="repetir">Repítela</label>
+    <input type="password" id="repetir" autocomplete="new-password" minlength="6" required>
+    <button type="submit" id="boton">Cambiar la contraseña</button>
+    <div class="fallo" id="fallo" hidden></div>
+  </form>
+
+  <div class="marca">Cashtor</div>
+</main>
+
+<script>
+(function () {
+  // La clave publicable es la misma que lleva la aplicación dentro y está
+  // pensada para vivir a la vista: por sí sola no da acceso a nada. Todo lo
+  // que se puede leer o escribir con ella lo decide la seguridad de la base
+  // de datos. La que no puede aparecer aquí jamás es la `service_role`.
+  var API = 'https://utolkehppgfousjbqndj.supabase.co';
+  var CLAVE = 'sb_publishable_NgnzlceKC_KB20CgWDW4SA_D5Wzh8R3';
+
+  var emoji = document.getElementById('emoji');
+  var titulo = document.getElementById('titulo');
+  var mensaje = document.getElementById('mensaje');
+  var pasos = document.getElementById('pasos');
+  var lista = document.getElementById('lista');
+  var formulario = document.getElementById('formulario');
+  var clave = document.getElementById('clave');
+  var repetir = document.getElementById('repetir');
+  var boton = document.getElementById('boton');
+  var fallo = document.getElementById('fallo');
+
+  function pintar(icono, clase, tit, texto, puntos) {
+    emoji.textContent = icono;
+    titulo.textContent = tit;
+    titulo.className = clase || '';
+    mensaje.textContent = texto || '';
+    pasos.hidden = true;
+    if (puntos && puntos.length) {
+      lista.innerHTML = '';
+      puntos.forEach(function (p) {
+        var li = document.createElement('li');
+        li.textContent = p;
+        lista.appendChild(li);
+      });
+      pasos.hidden = false;
+    }
+  }
+
+  function enlaceGastado() {
+    // Con diferencia el caso más habitual, y casi nunca es culpa de nadie:
+    // Gmail y otros pasan los enlaces de los correos por un escáner de
+    // seguridad, y visitarlo lo gasta.
+    pintar('🔗', 'aviso', 'Este enlace ya se había usado',
+      'Los enlaces valen una sola vez, y algunos correos los comprueban por ' +
+      'seguridad, lo que también los gasta.',
+      [
+        'Si acabas de crear la cuenta: prueba a entrar, seguramente ya está confirmada.',
+        'Si querías cambiar la contraseña: vuelve a pedir el enlace desde Cashtor.',
+        'Al llegar el correo nuevo, ábrelo cuanto antes.'
+      ]);
+  }
+
+  // Supabase manda el resultado detrás de la almohadilla (#). Ese trozo
+  // nunca viaja al servidor —solo lo ve este navegador—, y por eso basta
+  // con una página sin nada detrás.
+  var datos = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+  var error = datos.get('error_code') || datos.get('error');
+  var token = datos.get('access_token');
+  var tipo = datos.get('type');
+
+  // Se borra de la barra de direcciones en cuanto se ha leído: así no queda
+  // en el historial ni reaparece al pulsar "atrás" o al recargar.
+  if (location.hash) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+
+  if (error) {
+    enlaceGastado();
+  } else if (tipo === 'recovery' && token) {
+    pintar('🔑', 'acento', 'Elige una contraseña nueva',
+      'Escríbela dos veces y la cambiamos al momento.');
+    formulario.hidden = false;
+    clave.focus();
+
+    formulario.addEventListener('submit', function (e) {
+      e.preventDefault();
+      fallo.hidden = true;
+
+      if (clave.value.length < 6) {
+        fallo.textContent = 'Tiene que tener al menos 6 caracteres.';
+        fallo.hidden = false; return;
+      }
+      if (clave.value !== repetir.value) {
+        fallo.textContent = 'Las dos contraseñas no coinciden.';
+        fallo.hidden = false; return;
+      }
+
+      boton.disabled = true;
+      boton.textContent = 'Cambiando…';
+
+      fetch(API + '/auth/v1/user', {
+        method: 'PUT',
+        headers: {
+          'apikey': CLAVE,
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password: clave.value })
+      }).then(function (r) {
+        return r.json().then(function (cuerpo) { return { ok: r.ok, cuerpo: cuerpo }; });
+      }).then(function (res) {
+        if (res.ok) {
+          formulario.hidden = true;
+          pintar('🦫', 'acento', '¡Contraseña cambiada!',
+            'Ya puedes volver a Cashtor y entrar con la nueva.');
+          return;
+        }
+        var m = (res.cuerpo && (res.cuerpo.msg || res.cuerpo.message)) || '';
+        if (/should be different/i.test(m)) {
+          fallo.textContent = 'Tiene que ser distinta de la que tenías.';
+        } else if (/expired|invalid/i.test(m)) {
+          fallo.textContent = 'El enlace ha caducado mientras rellenabas. ' +
+            'Pide uno nuevo desde Cashtor.';
+        } else {
+          fallo.textContent = m || 'No se ha podido cambiar. Inténtalo otra vez.';
+        }
+        fallo.hidden = false;
+        boton.disabled = false;
+        boton.textContent = 'Cambiar la contraseña';
+      }).catch(function () {
+        fallo.textContent = 'No hay conexión. Comprueba tu internet.';
+        fallo.hidden = false;
+        boton.disabled = false;
+        boton.textContent = 'Cambiar la contraseña';
+      });
+    });
+  } else if (token) {
+    // Registro confirmado (`type=signup`), o cualquier otro enlace que haya
+    // dejado una sesión válida.
+    pintar('🦫', 'acento', '¡Cuenta confirmada!',
+      'Ya puedes volver a Cashtor y entrar con tu correo y tu contraseña.');
+  } else {
+    // Alguien ha llegado aquí escribiendo la dirección a mano.
+    pintar('🦫', '', 'Cashtor',
+      'Esta página solo sirve para confirmar cuentas y cambiar contraseñas ' +
+      'desde los enlaces del correo.');
+  }
+})();
+</script>
+</body>
+</html>
