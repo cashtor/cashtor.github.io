@@ -77,14 +77,22 @@
     border: none; border-radius: 10px;
   }
   button[disabled] { opacity: .6; cursor: default; }
-  /* El botón de descarga es un enlace, no un `button`: tiene que poder
+  /* Los botones de descarga son enlaces, no `button`: tienen que poder
      abrirse en otra pestaña y copiarse con el botón derecho. */
   a.descarga {
-    display: block; margin-top: 20px; padding: 14px;
+    display: block; margin-top: 12px; padding: 14px;
     font-size: 1rem; font-weight: 600; text-decoration: none;
     color: var(--acento-texto); background: var(--acento);
     border-radius: 10px;
   }
+  /* El aparato desde el que NO se está entrando. Sigue estando a la vista
+     —desde el móvil se querrá a veces el de Windows, y al revés— pero sin
+     competir con el que casi seguro se busca. */
+  a.descarga.otra {
+    color: var(--acento); background: transparent;
+    border: 1px solid var(--borde); font-weight: 500;
+  }
+  #descargas { margin-top: 20px; }
   .fallo {
     margin-top: 14px; padding: 12px; border-radius: 10px;
     background: var(--fondo); color: var(--error); font-size: .92rem;
@@ -112,14 +120,24 @@
   </form>
 
   <!-- Descarga directa, sin pasar por GitHub (Héctor, 22/08/2026). Funciona
-       porque el archivo se llama SIEMPRE `Cashtor.apk`, sin el número de
-       versión: `releases/latest/download/<nombre>` sirve el de la última
-       Release, sea la que sea. Si algún día se le pone la versión al nombre
-       del archivo, este enlace se rompe. -->
-  <a class="descarga" id="descarga" hidden
-     href="https://github.com/cashtor/cashtor.github.io/releases/latest/download/Cashtor.apk">
-    Descargar para Android
-  </a>
+       porque los archivos se llaman SIEMPRE igual, sin el número de versión:
+       `releases/latest/download/<nombre>` sirve el de la última Release, sea
+       la que sea. Si algún día se les pone la versión al nombre, estos dos
+       enlaces se rompen.
+
+       El orden lo pone el JavaScript según el aparato desde el que se entra.
+       En el HTML van los dos, para que sigan estando si el JavaScript
+       fallara. -->
+  <div id="descargas" hidden>
+    <a class="descarga" id="android"
+       href="https://github.com/cashtor/cashtor.github.io/releases/latest/download/Cashtor.apk">
+      Descargar para Android
+    </a>
+    <a class="descarga" id="windows"
+       href="https://github.com/cashtor/cashtor.github.io/releases/latest/download/Cashtor-windows.zip">
+      Descargar para Windows
+    </a>
+  </div>
 
 </main>
 
@@ -142,7 +160,9 @@
   var repetir = document.getElementById('repetir');
   var boton = document.getElementById('boton');
   var fallo = document.getElementById('fallo');
-  var descarga = document.getElementById('descarga');
+  var descargas = document.getElementById('descargas');
+  var android = document.getElementById('android');
+  var windows = document.getElementById('windows');
 
   function pintar(icono, clase, tit, texto, puntos) {
     emoji.textContent = icono;
@@ -284,16 +304,43 @@
     // cuando un amigo le pregunte dónde se baja la aplicación** (22/08/2026).
     // Antes ponía "esta página solo sirve para confirmar cuentas", que no le
     // servía de nada a quien llegaba aquí a propósito.
+    // **Los pasos cambian segun el aparato**: decirle a alguien que entra
+    // desde el ordenador que "Android avisara de que no viene de Google
+    // Play" no le sirve de nada, y al reves igual.
+    var esAndroid = /android/i.test(navigator.userAgent);
+    // Se descarta Android antes de mirar Windows: los moviles Android suelen
+    // llevar "Windows" en el user agent cuando piden la version de
+    // escritorio de una pagina, y sin este orden saldria el ZIP.
+    var esWindows = !esAndroid && /windows/i.test(navigator.userAgent);
+
     pintar('🦫', 'acento', 'Cashtor',
       'Las cuentas de casa, apuntadas en dos toques.',
-      [
-        'Descarga el archivo desde el móvil y ábrelo.',
-        'Android avisará de que no viene de Google Play: hay que darle ' +
-          'permiso una vez.',
-        'Al abrirla, crea tu cuenta con tu correo y confírmalo.',
-        'Después crea tu hogar, o espera a que te inviten a uno.',
-      ]);
-    descarga.hidden = false;
+      esWindows
+        ? [
+            'Descarga el archivo y descomprímelo donde quieras.',
+            'Abre Cashtor.exe. Windows dirá que protegió tu PC: pulsa ' +
+              '"Más información" y "Ejecutar de todas formas".',
+            'Al abrirla, crea tu cuenta con tu correo y confírmalo.',
+            'Después crea tu hogar, o espera a que te inviten a uno.',
+          ]
+        : [
+            'Descarga el archivo desde el móvil y ábrelo.',
+            'Android avisará de que no viene de Google Play: hay que darle ' +
+              'permiso una vez.',
+            'Al abrirla, crea tu cuenta con tu correo y confírmalo.',
+            'Después crea tu hogar, o espera a que te inviten a uno.',
+          ]);
+
+    // El aparato desde el que se entra, primero y destacado. El otro se
+    // queda debajo y apagado, porque a veces se busca a propósito: bajarse
+    // el APK desde el ordenador para pasárselo a alguien, por ejemplo.
+    if (esWindows) {
+      descargas.insertBefore(windows, android);
+      android.className = 'descarga otra';
+    } else {
+      windows.className = 'descarga otra';
+    }
+    descargas.hidden = false;
   }
 })();
 </script>
