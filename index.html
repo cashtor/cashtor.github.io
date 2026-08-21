@@ -163,6 +163,11 @@
   var error = datos.get('error_code') || datos.get('error');
   var token = datos.get('access_token');
   var tipo = datos.get('type');
+  // Supabase avisa en `message` de que el cambio de correo todavía necesita
+  // el otro enlace. Se mira en los dos sitios porque no siempre viaja detrás
+  // de la almohadilla: en algunos casos llega como parámetro normal.
+  var aviso = datos.get('message') ||
+    new URLSearchParams(location.search).get('message');
 
   // Se borra de la barra de direcciones en cuanto se ha leído: así no queda
   // en el historial ni reaparece al pulsar "atrás" o al recargar.
@@ -230,6 +235,25 @@
         boton.textContent = 'Cambiar la contraseña';
       });
     });
+  } else if (tipo === 'email_change' || aviso) {
+    // Cambio de correo (tarea 8.15). Supabase manda el enlace **a las dos
+    // direcciones**, la vieja y la nueva, y el cambio no se aplica hasta que
+    // se pulsan las dos. Cuando falta la otra, lo dice en `message`; si no
+    // viene nada, es que ya está.
+    //
+    // Sin esta rama caía en la de abajo y ponía "¡Cuenta confirmada!", que no
+    // es lo que ha pasado y encima daba a entender que ya se podía entrar con
+    // el correo nuevo.
+    if (aviso && /other email|proceed to confirm/i.test(aviso)) {
+      pintar('📩', 'acento', 'Falta el otro correo',
+        'Este enlace ya está aceptado. Busca el correo que hemos mandado a ' +
+        'la otra dirección y pulsa también su enlace: hasta entonces sigues ' +
+        'entrando en Cashtor con el correo de siempre.');
+    } else {
+      pintar('🦫', 'acento', '¡Correo cambiado!',
+        'Ya puedes entrar en Cashtor con tu correo nuevo. La contraseña es ' +
+        'la misma de antes.');
+    }
   } else if (token) {
     // Registro confirmado (`type=signup`), o cualquier otro enlace que haya
     // dejado una sesión válida.
