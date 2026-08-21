@@ -81,10 +81,6 @@
     margin-top: 14px; padding: 12px; border-radius: 10px;
     background: var(--fondo); color: var(--error); font-size: .92rem;
   }
-  .marca {
-    margin-top: 24px; font-size: .82rem; color: var(--suave);
-    letter-spacing: .04em; text-transform: uppercase;
-  }
   .acento { color: var(--acento); }
   .aviso { color: var(--aviso); }
   [hidden] { display: none !important; }
@@ -107,7 +103,6 @@
     <div class="fallo" id="fallo" hidden></div>
   </form>
 
-  <div class="marca">Cashtor</div>
 </main>
 
 <script>
@@ -178,8 +173,9 @@
   if (error) {
     enlaceGastado();
   } else if (tipo === 'recovery' && token) {
-    pintar('🔑', 'acento', 'Elige una contraseña nueva',
-      'Escríbela dos veces y la cambiamos al momento.');
+    // Sin frase debajo del título: los dos campos ya se explican solos
+    // (Héctor, 21/08/2026 — misma preferencia minimalista de la decisión 63).
+    pintar('🔑', 'acento', 'Elige una contraseña nueva', '');
     formulario.hidden = false;
     clave.focus();
 
@@ -212,8 +208,7 @@
       }).then(function (res) {
         if (res.ok) {
           formulario.hidden = true;
-          pintar('🦫', 'acento', '¡Contraseña cambiada!',
-            'Ya puedes volver a Cashtor y entrar con la nueva.');
+          pintar('🦫', 'acento', '¡Contraseña cambiada!', '');
           return;
         }
         var m = (res.cuerpo && (res.cuerpo.msg || res.cuerpo.message)) || '';
