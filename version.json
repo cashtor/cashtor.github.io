@@ -1,6 +1,6 @@
 {
-  "minima": 1,
-  "ultima": 1,
+  "minima": 2,
+  "ultima": 2,
   "url": "https://github.com/cashtor/cashtor.github.io/releases/latest/download/Cashtor.apk",
-  "novedades": ""
+  "novedades": "Prueba: así se vería el bloqueo por versión demasiado antigua."
 }
