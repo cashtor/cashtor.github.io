@@ -93,6 +93,11 @@
     border: 1px solid var(--borde); font-weight: 500;
   }
   #descargas { margin-top: 20px; }
+  /* El aviso de que hace falta invitación, bajo los botones de descarga. */
+  .aviso-privada {
+    margin-top: 16px; margin-bottom: 0;
+    font-size: .9rem; color: var(--suave);
+  }
   .fallo {
     margin-top: 14px; padding: 12px; border-radius: 10px;
     background: var(--fondo); color: var(--error); font-size: .92rem;
@@ -137,6 +142,17 @@
        href="https://github.com/cashtor/cashtor.github.io/releases/latest/download/Cashtor-windows.exe">
       Descargar para Windows
     </a>
+
+    <!-- **Que el registro es por invitación se dice AQUÍ, antes de
+         descargar** (tarea 7.63, 28/08/2026). Desde la migración 107 no se
+         puede crear una cuenta sin que alguien te haya invitado; sin este
+         aviso, quien se bajara la aplicación descubriría el muro después de
+         instalarla, que es el peor sitio para enterarse. Y de paso ahorra la
+         descarga a quien no va a poder entrar. -->
+    <p class="aviso-privada">
+      Cashtor es privada: para crear una cuenta hace falta que alguien te
+      haya invitado con tu correo.
+    </p>
   </div>
 
 </main>
