@@ -6,479 +6,632 @@
 <meta name="robots" content="noindex">
 <title>Guía de Cashtor</title>
 <style>
-  /* Los colores son los de la aplicación (`Paleta`, en `core/tema.dart`):
-     crema, verde oscuro, verde y marrón. **Sin ámbar** (Héctor, 26/08/2026):
-     no pega y le recuerda a otra marca. */
+  /* ==========================================================================
+     Los colores salen de `Paleta`, en lib/core/tema.dart, uno a uno. Si la
+     guía dibuja la aplicación, tiene que dibujarla con SUS colores: un verde
+     parecido convierte el dibujo en una ilustración, y lo que se busca es
+     que se reconozca la pantalla.
+     ========================================================================== */
   :root {
     color-scheme: light dark;
-    --crema: #F4EDE4;
-    --fondo: #F4EDE4;
-    --tarjeta: #FFFFFF;
-    --texto: #0A1209;
-    --suave: #55604F;
-    --borde: #E0D6C8;
-    --verde: #20503A;
-    --verde-claro: #5B8F5E;
-    --sobre-verde: #F4EDE4;
-    --marron: #544539;
-    --rojo: #A3382C;
+    --crema:#F4EDE4; --verde:#20503A; --acento:#245B3D; --marron:#544539;
+    --noche:#16241B; --tinta:#0A1209;
+
+    --fondo:#F4EDE4; --tarjeta:#FFFFFF; --texto:#0A1209; --suave:#5A6656;
+    --borde:#E2D9CB; --linea:#EFE8DD; --rojo:#A3382C;
+    --app-fondo:#F4EDE4; --app-texto:#0A1209; --app-suave:#5A6656;
+    --app-sup:#FFFFFF; --app-borde:#E2D9CB;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --fondo: #16241B;
-      --tarjeta: #1E3126;
-      --texto: #EDE6DC;
-      --suave: #A9B8A9;
-      --borde: #2C4534;
-      --verde: #6FA873;
-      --verde-claro: #8CC08F;
-      --sobre-verde: #12211A;
-      --marron: #C6AE93;
-      --rojo: #F2B8B5;
+      --fondo:#131C16; --tarjeta:#1B2A21; --texto:#EDE6DC; --suave:#A3B3A3;
+      --borde:#2C4534; --linea:#243429; --rojo:#F2B8B5;
+      --verde:#1D4433; --acento:#8CC08F;
+      --app-fondo:#16241B; --app-texto:#EDE6DC; --app-suave:#A3B3A3;
+      --app-sup:#1E3126; --app-borde:#2C4534;
     }
   }
 
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
-  body {
-    margin: 0;
-    background: var(--fondo);
-    color: var(--texto);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.6;
-    -webkit-text-size-adjust: 100%;
-  }
-  .envoltorio { max-width: 720px; margin: 0 auto; padding: 0 20px 64px; }
-
-  /* --- Cabecera ------------------------------------------------------- */
-  header {
-    background: var(--verde);
-    color: var(--sobre-verde);
-    padding: 56px 20px 44px;
-    text-align: center;
-  }
-  header .marca {
-    font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
-    opacity: .75; margin: 0 0 10px;
-  }
-  header h1 { font-size: 2rem; margin: 0 0 10px; line-height: 1.2; }
-  header p { margin: 0 auto; max-width: 34ch; opacity: .88; }
-
-  /* --- Índice pegajoso ------------------------------------------------ */
-  nav {
-    position: sticky; top: 0; z-index: 10;
-    background: var(--fondo);
-    border-bottom: 1px solid var(--borde);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  nav ul {
-    display: flex; gap: 8px; margin: 0;
-    padding: 12px 20px; list-style: none;
-    max-width: 720px; margin: 0 auto; width: max-content; min-width: 100%;
-  }
-  nav a {
-    display: block; white-space: nowrap;
-    padding: 7px 14px; border-radius: 999px;
-    font-size: .88rem; text-decoration: none;
-    color: var(--suave); border: 1px solid var(--borde);
-  }
-  nav a:hover, nav a:focus { color: var(--verde); border-color: var(--verde); }
-
-  /* --- Secciones ------------------------------------------------------ */
-  section { padding-top: 44px; }
-  h2 {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 1.3rem; margin: 0 0 6px; color: var(--verde);
-  }
-  h2 svg { flex: none; width: 26px; height: 26px; stroke: var(--verde); }
-  .entradilla { margin: 0 0 20px; color: var(--suave); }
-  h3 { font-size: 1rem; margin: 24px 0 8px; }
-  p { margin: 0 0 14px; }
-
-  .tarjeta {
-    background: var(--tarjeta);
-    border: 1px solid var(--borde);
-    border-radius: 20px;
-    padding: 22px 24px;
-  }
-  .tarjeta + .tarjeta { margin-top: 14px; }
-  .tarjeta > :last-child { margin-bottom: 0; }
-
-  /* Pasos numerados: el número grande y el texto al lado. */
-  ol.pasos { list-style: none; margin: 0; padding: 0; counter-reset: paso; }
-  ol.pasos li {
-    display: flex; gap: 16px; align-items: flex-start;
-    padding: 14px 0; counter-increment: paso;
-    border-top: 1px solid var(--borde);
-  }
-  ol.pasos li:first-child { border-top: 0; padding-top: 0; }
-  ol.pasos li:last-child { padding-bottom: 0; }
-  ol.pasos li::before {
-    content: counter(paso);
-    flex: none; width: 34px; height: 34px; border-radius: 50%;
-    display: grid; place-items: center;
-    background: var(--verde); color: var(--sobre-verde);
-    font-weight: 700; font-size: .95rem;
-  }
-  ol.pasos strong { display: block; }
-  ol.pasos span { color: var(--suave); font-size: .93rem; }
-
-  /* Rejilla de fichas (pestañas, ámbitos). */
-  .rejilla { display: grid; gap: 12px; grid-template-columns: 1fr; }
-  @media (min-width: 560px) { .rejilla.dos { grid-template-columns: 1fr 1fr; } }
-  .ficha {
-    background: var(--tarjeta); border: 1px solid var(--borde);
-    border-radius: 16px; padding: 16px 18px;
-  }
-  .ficha h4 {
-    display: flex; align-items: center; gap: 9px;
-    margin: 0 0 4px; font-size: 1rem;
-  }
-  .ficha h4 svg { flex: none; width: 19px; height: 19px; stroke: var(--verde-claro); }
-  .ficha p { margin: 0; color: var(--suave); font-size: .93rem; }
-
-  /* La frase que resume una sección entera. */
-  .clave {
-    margin: 0 0 16px; padding: 16px 20px;
-    background: var(--verde); color: var(--sobre-verde);
-    border-radius: 16px; font-size: 1.02rem; font-weight: 600;
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--fondo);color:var(--texto);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.55;
   }
 
-  /* El reparto de un recibo, dibujado. */
-  .reparto { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 4px 0 16px; }
-  .caja-importe {
-    border: 2px solid var(--verde); border-radius: 14px;
-    padding: 10px 16px; text-align: center; min-width: 108px;
+  /* ---------- Cabecera: compacta. Ocupa poco porque no enseña nada -------- */
+  header{
+    background:var(--verde);color:var(--crema);
+    padding:22px 20px;text-align:center;
   }
-  .caja-importe .cifra { display: block; font-size: 1.15rem; font-weight: 700; }
-  .caja-importe .pie { display: block; font-size: .78rem; color: var(--suave); }
-  .flecha { color: var(--verde); font-size: 1.4rem; line-height: 1; }
+  header b{display:block;font-size:.72rem;letter-spacing:.2em;
+    text-transform:uppercase;opacity:.75;font-weight:600}
+  header h1{margin:6px 0 0;font-size:1.35rem}
 
-  table { width: 100%; border-collapse: collapse; font-size: .93rem; }
-  th, td { text-align: left; padding: 11px 10px; border-top: 1px solid var(--borde); vertical-align: top; }
-  thead th { border-top: 0; color: var(--suave); font-weight: 600; font-size: .82rem; text-transform: uppercase; letter-spacing: .05em; }
-  tbody th { font-weight: 600; }
-  .si { color: var(--verde-claro); font-weight: 600; }
-  .no { color: var(--rojo); font-weight: 600; }
-  .desplazable { overflow-x: auto; }
-
-  dl { margin: 0; }
-  dt { font-weight: 600; margin-top: 16px; }
-  dt:first-child { margin-top: 0; }
-  dd { margin: 4px 0 0; color: var(--suave); }
-
-  .ruta {
-    display: inline-block;
-    background: var(--fondo); border: 1px solid var(--borde);
-    border-radius: 7px; padding: 1px 7px;
-    font-size: .9em; white-space: nowrap;
+  /* ---------- Pestañas: SIEMPRE a la vista -------------------------------
+     Héctor: *"es muy feo tener que bajar mucho a una sección y luego subir
+     arriba del todo, o haz pestañas"*. Se enseña **una sección cada vez**,
+     así que no hay scroll largo del que volver.
+     En móvil, barra pegada arriba que se desliza a lo ancho.
+     En pantalla ancha, columna fija a la izquierda.                        */
+  nav{
+    position:sticky;top:0;z-index:20;
+    background:var(--fondo);border-bottom:1px solid var(--borde);
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
-  @media (prefers-color-scheme: dark) { .ruta { background: #12211A; } }
-
-  footer {
-    margin-top: 56px; padding-top: 24px;
-    border-top: 1px solid var(--borde);
-    color: var(--suave); font-size: .88rem; text-align: center;
+  nav::-webkit-scrollbar{display:none}
+  nav ul{display:flex;gap:4px;margin:0;padding:8px 12px;list-style:none;
+    width:max-content;min-width:100%}
+  nav button{
+    font:inherit;font-size:.86rem;white-space:nowrap;cursor:pointer;
+    padding:8px 14px;border-radius:999px;border:1px solid transparent;
+    background:transparent;color:var(--suave);
   }
-  footer a { color: var(--verde); }
+  nav button:hover{color:var(--acento)}
+  nav button[aria-selected=true]{
+    background:var(--verde);color:var(--crema);font-weight:600;
+  }
+
+  main{max-width:1000px;margin:0 auto;padding:0 20px 72px}
+  section[hidden]{display:none}
+  section{padding-top:28px;animation:entra .18s ease-out}
+  @keyframes entra{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+
+  h2{font-size:1.45rem;margin:0 0 6px;color:var(--acento);line-height:1.2}
+  .sub{margin:0 0 22px;color:var(--suave);font-size:1rem}
+  h3{font-size:1rem;margin:26px 0 10px}
+  p{margin:0 0 12px}
+
+  /* Dos columnas en pantalla ancha: el dibujo al lado del texto, no debajo */
+  .par{display:grid;gap:26px;align-items:start}
+  @media(min-width:860px){
+    .par{grid-template-columns:300px 1fr}
+    .par.derecha{grid-template-columns:1fr 300px}
+    .par.derecha .movil{order:2}
+  }
+
+  /* ---------- El móvil dibujado ------------------------------------------
+     No es una foto: es la pantalla reconstruida con los colores y las formas
+     de la aplicación. Se ve nítida en cualquier tamaño, cambia con el tema
+     del que mira, no enseña dinero de nadie y no hay que rehacerla cada vez
+     que se cambia un dato.                                                */
+  .movil{
+    background:var(--app-fondo);color:var(--app-texto);
+    border:8px solid var(--marron);border-radius:28px;
+    padding:0;overflow:hidden;font-size:.78rem;
+    box-shadow:0 8px 24px rgba(0,0,0,.14);
+    max-width:300px;margin:0 auto;
+  }
+  .movil .barra{background:var(--verde);color:var(--crema);
+    padding:9px 12px;font-weight:600;font-size:.8rem}
+  .movil .cuerpo{padding:12px}
+  .movil .pie{display:flex;border-top:1px solid var(--app-borde);
+    background:var(--app-sup)}
+  .movil .pie span{flex:1;text-align:center;padding:7px 2px;font-size:.6rem;
+    color:var(--app-suave)}
+  .movil .pie span.on{color:var(--acento);font-weight:700}
+  .movil .pie i{display:block;font-style:normal;font-size:.95rem}
+
+  .tarj{background:var(--app-sup);border:1px solid var(--app-borde);
+    border-radius:16px;padding:10px 12px;margin-bottom:8px}
+  .campo{border:1px solid var(--app-borde);border-radius:8px;
+    padding:8px 10px;margin-bottom:8px;color:var(--app-suave)}
+  .campo b{color:var(--app-texto);font-weight:600}
+  .boton{background:var(--verde);color:var(--crema);text-align:center;
+    padding:9px;border-radius:10px;font-weight:700;margin-top:2px}
+  .boton.gris{background:transparent;color:var(--app-suave);
+    border:1px solid var(--app-borde);font-weight:500}
+  .fila{display:flex;justify-content:space-between;gap:10px;
+    padding:6px 0;border-top:1px solid var(--app-borde)}
+  .fila:first-child{border-top:0}
+  .fila .d{color:var(--app-suave)}
+  .grande{font-size:1.5rem;font-weight:800;color:var(--acento);line-height:1.1}
+  .mini{font-size:.66rem;color:var(--app-suave);text-transform:uppercase;
+    letter-spacing:.06em}
+  .verde{color:var(--acento);font-weight:700}
+  .rojo{color:var(--rojo);font-weight:700}
+  .pill{display:inline-block;background:var(--verde);color:var(--crema);
+    border-radius:999px;padding:2px 9px;font-size:.66rem;font-weight:700}
+  .pill.off{background:transparent;color:var(--app-suave);
+    border:1px solid var(--app-borde);font-weight:500}
+
+  /* Barras del año */
+  .bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:.7rem}
+  .bar .n{width:26px;color:var(--app-suave)}
+  .bar .b{height:9px;border-radius:99px;background:var(--acento)}
+  .bar .b.neg{background:var(--rojo)}
+  .bar .v{margin-left:auto;font-weight:600}
+
+  /* ---------- Piezas de texto -------------------------------------------- */
+  .clave{
+    margin:0 0 18px;padding:14px 18px;background:var(--verde);
+    color:var(--crema);border-radius:16px;font-weight:600;
+  }
+  .caja{background:var(--tarjeta);border:1px solid var(--borde);
+    border-radius:16px;padding:16px 18px;margin-bottom:12px}
+  .caja>:last-child{margin-bottom:0}
+  .rejilla{display:grid;gap:10px}
+  @media(min-width:620px){.rejilla.d{grid-template-columns:1fr 1fr}}
+  .ficha{background:var(--tarjeta);border:1px solid var(--borde);
+    border-radius:14px;padding:13px 15px}
+  .ficha h4{margin:0 0 3px;font-size:.95rem}
+  .ficha p{margin:0;color:var(--suave);font-size:.88rem}
+
+  .pasos{list-style:none;margin:0;padding:0;counter-reset:p}
+  .pasos li{display:flex;gap:13px;padding:11px 0;counter-increment:p;
+    border-top:1px solid var(--linea)}
+  .pasos li:first-child{border-top:0;padding-top:0}
+  .pasos li::before{content:counter(p);flex:none;width:28px;height:28px;
+    border-radius:50%;display:grid;place-items:center;background:var(--verde);
+    color:var(--crema);font-weight:700;font-size:.82rem}
+  .pasos b{display:block}
+  .pasos span{color:var(--suave);font-size:.9rem}
+
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  th,td{text-align:left;padding:9px 8px;border-top:1px solid var(--linea);
+    vertical-align:top}
+  thead th{border-top:0;color:var(--suave);font-size:.76rem;
+    text-transform:uppercase;letter-spacing:.05em}
+  .si{color:var(--acento);font-weight:700}
+  .no{color:var(--rojo);font-weight:700}
+  .desliza{overflow-x:auto}
+
+  dl{margin:0}
+  dt{font-weight:600;margin-top:14px}
+  dt:first-child{margin-top:0}
+  dd{margin:3px 0 0;color:var(--suave)}
+
+  .ruta{display:inline-block;background:var(--fondo);border:1px solid var(--borde);
+    border-radius:6px;padding:0 6px;font-size:.9em;white-space:nowrap}
+
+  .reparto{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:6px 0 14px}
+  .imp{border:2px solid var(--acento);border-radius:12px;padding:8px 14px;
+    text-align:center;min-width:96px;background:var(--tarjeta)}
+  .imp b{display:block;font-size:1.05rem}
+  .imp small{color:var(--suave);font-size:.72rem}
+  .flecha{color:var(--acento);font-size:1.2rem}
+
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--borde);
+    color:var(--suave);font-size:.85rem;text-align:center}
+  footer a{color:var(--acento)}
 </style>
 </head>
 <body>
 
-<!-- Los iconos, una sola vez: se repiten con <use>. Trazo, no relleno, para
-     que sigan el color del texto y no pesen nada. -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <g id="i-mas"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></g>
-    <g id="i-brujula"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></g>
-    <g id="i-cartera"><path d="M3 7a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M16 12h4"/></g>
-    <g id="i-gota"><path d="M12 3s6 6.4 6 10a6 6 0 01-12 0c0-3.6 6-10 6-10z"/></g>
-    <g id="i-etiquetas"><path d="M4 7h9l5 5-5 5H4z"/></g>
-    <g id="i-hucha"><path d="M4 12a6 6 0 016-6h4a6 6 0 016 6v4H4z"/><path d="M7 16v3M17 16v3"/><circle cx="16" cy="11" r="1"/></g>
-    <g id="i-candado"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></g>
-    <g id="i-comprobar"><path d="M4 5h16v14H4z"/><path d="M8 12l3 3 5-6"/></g>
-    <g id="i-ajustes"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></g>
-    <g id="i-pregunta"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 115 .5c0 1.5-2.5 1.8-2.5 3.5"/><path d="M12 17h.01"/></g>
-    <g id="i-calendario"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></g>
-    <g id="i-grafico"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g>
-  </defs>
-</svg>
-
 <header>
-  <p class="marca">Cashtor</p>
+  <b>Cashtor</b>
   <h1>Guía rápida</h1>
-  <p>Todo lo que hace la aplicación, en diez minutos de lectura. Y menos si vas directo a lo que buscas.</p>
 </header>
 
 <nav aria-label="Secciones">
-  <ul>
-    <li><a href="#apuntar">Apuntar</a></li>
-    <li><a href="#pestanas">Las pestañas</a></li>
-    <li><a href="#sobra">Sobra</a></li>
-    <li><a href="#fijos">Fijos</a></li>
-    <li><a href="#ambitos">Mensual, Extra y Deuda</a></li>
-    <li><a href="#huchas">Huchas</a></li>
-    <li><a href="#privados">Privados</a></li>
-    <li><a href="#revision">Revisión</a></li>
-    <li><a href="#ajustes">Ajustes</a></li>
-    <li><a href="#dudas">Dudas</a></li>
-  </ul>
+  <ul id="pestanas"></ul>
 </nav>
 
-<div class="envoltorio">
+<main id="contenido">
 
+<!-- ===================== APUNTAR ===================== -->
 <section id="apuntar">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-mas"/></svg>Apuntar un gasto</h2>
-  <p class="entradilla">Es lo que se hace veinte veces por semana, muchas veces con una mano y en la cola del súper. Por eso son dos toques y nada más.</p>
+  <h2>Apuntar un gasto</h2>
+  <p class="sub">Dos toques. Es lo que se hace veinte veces por semana.</p>
 
-  <div class="tarjeta">
-    <ol class="pasos">
-      <li><div><strong>En qué te lo has gastado</strong><span>Escribes y la lista se filtra sola. Si lo que escribes no existe, la aplicación te ofrece crearlo, o usarlo <em>solo esta vez</em> — para la tienda a la que vas una vez en la vida.</span></div></li>
-      <li><div><strong>Cuánto ha sido</strong><span>Con o sin decimales. No hace falta poner el signo menos: lo normal es un gasto y se da por hecho.</span></div></li>
-      <li><div><strong>Guardar</strong><span>El botón se enciende en cuanto hay concepto e importe. Lo apuntado aparece justo debajo.</span></div></li>
-    </ol>
-  </div>
-
-  <h3>Si lo que entra es dinero</h3>
-  <p>Marca la casilla <strong>Ingreso</strong>, al lado del importe. La cifra se pone en verde con un <strong>+</strong> delante. Es para ventas y devoluciones; la nómina no se apunta a mano, va sola (ver <a href="#fijos">Fijos</a>).</p>
-
-  <h3>Para corregir o borrar</h3>
-  <p>Lo apuntado hoy sale debajo del formulario: se <strong>desliza a la izquierda</strong> para borrarlo, o se toca para corregirlo. Lo de días anteriores, igual, desde <span class="ruta">Consultar → Mes</span>. Borrar siempre pregunta antes.</p>
-
-  <h3>La primera vez</h3>
-  <p>Al abrir <strong>Añadir</strong> por primera vez, un guía va señalando los campos paso a paso. Se puede saltar, y se puede volver a pedir desde <span class="ruta">Ajustes → Ayuda → Ver el tutorial</span>.</p>
-</section>
-
-<section id="pestanas">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-brujula"/></svg>Las pestañas de abajo</h2>
-  <p class="entradilla">Cinco, y una se puede esconder. Cada una responde a una pregunta distinta.</p>
-
-  <div class="rejilla dos">
-    <div class="ficha">
-      <h4><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-mas"/></svg>Añadir</h4>
-      <p><em>¿Cuánto me queda este mes?</em> Se apunta, y arriba están las dos cifras que importan.</p>
+  <div class="par">
+    <div class="movil">
+      <div class="barra">Sobra este mes</div>
+      <div class="cuerpo" style="background:var(--verde);color:var(--crema);padding:10px 12px">
+        <div style="font-size:1.6rem;font-weight:800">412,80&nbsp;€</div>
+        <div style="font-size:.7rem;opacity:.85">13,76 € al día · Quedan 30 días</div>
+      </div>
+      <div class="cuerpo">
+        <div class="campo"><b>Mercadona</b></div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div class="campo" style="flex:1;margin:0"><b>24,90</b> €</div>
+          <div class="campo" style="margin:0;display:flex;align-items:center;gap:5px">
+            <span style="width:13px;height:13px;border:1.5px solid var(--app-borde);
+              border-radius:3px;display:inline-block"></span> Ingreso
+          </div>
+        </div>
+        <div class="boton">Guardar</div>
+        <div class="mini" style="margin:12px 0 5px">Apuntado hoy</div>
+        <div class="fila"><span>Gasolina</span><span>−48,00 €</span></div>
+        <div class="fila"><span>Farmacia</span><span>−12,35 €</span></div>
+      </div>
+      <div class="pie">
+        <span class="on"><i>＋</i>Añadir</span><span><i>📅</i>Consultar</span>
+        <span><i>✓</i>Revisión</span><span><i>📊</i>Estad.</span><span><i>⚙</i>Ajustes</span>
+      </div>
     </div>
-    <div class="ficha">
-      <h4><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-calendario"/></svg>Consultar</h4>
-      <p><em>¿En qué se ha ido?</em> Tres pestañas dentro: <strong>Mes</strong>, <strong>Año</strong> y <strong>Huchas</strong>.</p>
-    </div>
-    <div class="ficha">
-      <h4><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-comprobar"/></svg>Revisión</h4>
-      <p><em>¿Se me ha olvidado algo?</em> Para cuadrar el mes con el banco. Se puede esconder.</p>
-    </div>
-    <div class="ficha">
-      <h4><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-grafico"/></svg>Estadísticas</h4>
-      <p><em>¿En qué gastamos de más?</em> Reparto por grupos, los cinco mayores gastos y el ahorro mes a mes.</p>
-    </div>
-    <div class="ficha">
-      <h4><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-ajustes"/></svg>Ajustes</h4>
-      <p>Tu cuenta, el hogar, los fijos, los conceptos, los colores y la copia de seguridad.</p>
+
+    <div>
+      <ol class="pasos">
+        <li><div><b>En qué te lo has gastado</b><span>Escribes y la lista se filtra sola. Si no existe, puedes crearlo o usarlo <em>solo esta vez</em>.</span></div></li>
+        <li><div><b>Cuánto ha sido</b><span>Con o sin decimales. No hace falta el signo menos: se da por hecho que es un gasto.</span></div></li>
+        <li><div><b>Guardar</b><span>Se enciende en cuanto hay concepto e importe. Lo apuntado sale justo debajo.</span></div></li>
+      </ol>
+
+      <h3>Si lo que entra es dinero</h3>
+      <p>Marca <b>Ingreso</b>, al lado del importe: la cifra se pone en verde con un <span class="verde">+</span> delante. La nómina no se apunta a mano, va sola.</p>
+
+      <h3>Corregir o borrar</h3>
+      <p>Lo de hoy sale debajo del formulario: se <b>desliza a la izquierda</b> para borrar, o se toca para corregir. Lo de días anteriores, igual desde <span class="ruta">Consultar → Mes</span>.</p>
     </div>
   </div>
-
-  <h3>Dentro de Consultar</h3>
-  <dl>
-    <dt>Mes</dt>
-    <dd>Ingresos, recibos fijos y todo lo apuntado agrupado por día. Abajo, lo gastado y lo que sobra. Las flechas cambian de mes; <strong>tocando el nombre del mes</strong> se salta lejos de un tirón.</dd>
-    <dt>Año</dt>
-    <dd>El ahorro del año en grande, y debajo una barra por mes: cuanto más larga, mejor fue ese mes. <strong>Se toca un mes y se abre.</strong> Las otras pestañas son los ingresos extra, los gastos extra y las deudas.</dd>
-    <dt>Huchas</dt>
-    <dd>Los botes personales. Ver <a href="#huchas">más abajo</a>.</dd>
-  </dl>
 </section>
 
-<section id="sobra">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-cartera"/></svg>Sobra y gasto permitido diario</h2>
-  <p class="entradilla">Las dos cifras de arriba de Añadir. Se recalculan solas con cada apunte.</p>
+<!-- ===================== PESTAÑAS ===================== -->
+<section id="pestanas-app" hidden>
+  <h2>Las cinco pestañas</h2>
+  <p class="sub">Cada una responde a una pregunta distinta.</p>
 
-  <div class="tarjeta">
-    <dl>
-      <dt>Sobra</dt>
-      <dd>Lo que entra este mes menos lo que ya se ha gastado, recibos incluidos. Es el dinero que queda disponible hasta fin de mes.</dd>
-      <dt>Gasto permitido diario</dt>
-      <dd>Lo que sobra repartido entre los días que faltan. Sirve para saber, hoy, si se puede o no se puede.</dd>
-    </dl>
+  <div class="rejilla d">
+    <div class="ficha"><h4>＋ Añadir</h4><p><em>¿Cuánto me queda este mes?</em> Se apunta, y arriba están las dos cifras.</p></div>
+    <div class="ficha"><h4>📅 Consultar</h4><p><em>¿En qué se ha ido?</em> Dentro: Mes, Año y Huchas.</p></div>
+    <div class="ficha"><h4>✓ Revisión</h4><p><em>¿Se me ha olvidado algo?</em> Para cuadrar con el banco. Se puede esconder.</p></div>
+    <div class="ficha"><h4>📊 Estadísticas</h4><p><em>¿En qué gastamos de más?</em> Por grupos, y el ahorro mes a mes.</p></div>
+    <div class="ficha"><h4>⚙ Ajustes</h4><p>Tu cuenta, el hogar, los fijos, los colores y las copias.</p></div>
   </div>
 
-  <p style="margin-top:16px">Si quieres <strong>apartar una cantidad todos los meses</strong>, se dice en <span class="ruta">Ajustes → Ahorro del mes</span>: esa cifra deja de contar como disponible, así que Sobra baja y el gasto diario también. <strong>El dinero no se mueve a ninguna parte</strong> — simplemente la aplicación hace como que no está.</p>
+  <h3>Consultar por dentro</h3>
+  <div class="par derecha">
+    <div>
+      <dl>
+        <dt>Mes</dt>
+        <dd>Ingresos, recibos y todo lo apuntado por días. Las flechas cambian de mes; <b>tocando el nombre</b> se salta lejos.</dd>
+        <dt>Año</dt>
+        <dd>El ahorro en grande y una barra por mes: cuanto más larga, mejor fue. <b>Se toca un mes y se abre.</b></dd>
+        <dt>Huchas</dt>
+        <dd>Los botes personales, cada uno con su saldo.</dd>
+      </dl>
+    </div>
+    <div class="movil">
+      <div class="barra">◀ agosto de 2026 ▶</div>
+      <div class="cuerpo">
+        <div class="mini">Ahorro de 2026</div>
+        <div class="grande">2.170,23 €</div>
+        <div style="margin-top:10px">
+          <div class="bar"><span class="n">may</span><span class="b" style="width:52%"></span><span class="v">318 €</span></div>
+          <div class="bar"><span class="n">jun</span><span class="b" style="width:78%"></span><span class="v">476 €</span></div>
+          <div class="bar"><span class="n">jul</span><span class="b neg" style="width:22%"></span><span class="v rojo">−134 €</span></div>
+          <div class="bar"><span class="n">ago</span><span class="b" style="width:64%"></span><span class="v">392 €</span></div>
+        </div>
+      </div>
+      <div class="pie">
+        <span><i>＋</i>Añadir</span><span class="on"><i>📅</i>Consultar</span>
+        <span><i>✓</i>Revisión</span><span><i>📊</i>Estad.</span><span><i>⚙</i>Ajustes</span>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section id="fijos">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-gota"/></svg>Los fijos: recibos, nómina y pagas extra</h2>
-  <p class="entradilla">Lo que llega todos los meses no se apunta a mano: se configura una vez y aparece solo.</p>
+<!-- ===================== SOBRA ===================== -->
+<section id="sobra" hidden>
+  <h2>Sobra y gasto diario</h2>
+  <p class="sub">Las dos cifras de arriba de Añadir. Se recalculan con cada apunte.</p>
+
+  <div class="par">
+    <div class="movil">
+      <div class="cuerpo" style="background:var(--verde);color:var(--crema);padding:14px 12px">
+        <div style="font-size:.66rem;opacity:.8;text-transform:uppercase;letter-spacing:.06em">Sobra este mes</div>
+        <div style="font-size:1.9rem;font-weight:800;line-height:1.1">412,80&nbsp;€</div>
+        <div style="font-size:.75rem;opacity:.9;margin-top:3px">13,76 € al día · Quedan 30 días</div>
+      </div>
+      <div class="cuerpo"><div class="campo">Concepto</div><div class="campo">Importe</div><div class="boton">Guardar</div></div>
+    </div>
+    <div>
+      <div class="caja">
+        <dl>
+          <dt>Sobra</dt>
+          <dd>Lo que entra este mes menos lo gastado, recibos incluidos. El dinero disponible hasta fin de mes.</dd>
+          <dt>Gasto permitido diario</dt>
+          <dd>Lo que sobra repartido entre los días que faltan. Sirve para saber, hoy, si se puede o no.</dd>
+        </dl>
+      </div>
+      <p>Si quieres <b>apartar una cantidad todos los meses</b>, se dice en <span class="ruta">Ajustes → Ahorro del mes</span>. Esa cifra deja de contar como disponible. <b>El dinero no se mueve a ninguna parte</b> — la aplicación hace como que no está.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FIJOS ===================== -->
+<section id="fijos" hidden>
+  <h2>Los fijos</h2>
+  <p class="sub">Recibos, nómina y pagas extra. Lo que llega siempre.</p>
 
   <p class="clave">Cada cuánto llega se configura una vez en Ajustes. Lo que cuesta cada vez se cambia desde el propio mes.</p>
 
-  <h3>Darlo de alta</h3>
-  <p>En <span class="ruta">Ajustes → Fijos</span>. Se le pone nombre, cada cuánto llega y si se reparte. Antes de guardar, la aplicación escribe en una línea lo que va a pasar: <em>«Cubre enero–junio y julio–diciembre, repartido a partes iguales»</em>.</p>
-
-  <h3>Poner lo que ha venido este mes</h3>
-  <p>En <span class="ruta">Consultar → Mes</span> se despliega <strong>Gastos fijos</strong> y se toca la línea. Se escribe <strong>el importe completo del recibo</strong> y la aplicación lo reparte:</p>
-
-  <div class="reparto">
-    <div class="caja-importe"><span class="cifra">30,59 €</span><span class="pie">el recibo del agua</span></div>
-    <span class="flecha" aria-hidden="true">→</span>
-    <div class="caja-importe"><span class="cifra">15,30 €</span><span class="pie">agosto</span></div>
-    <span class="flecha" aria-hidden="true">+</span>
-    <div class="caja-importe"><span class="cifra">15,29 €</span><span class="pie">septiembre</span></div>
-  </div>
-
-  <p>El céntimo que no se puede partir por la mitad se lo queda <strong>el primer mes</strong>, siempre. Así los dos meses suman exactamente el recibo, sin que aparezca ni sobre un céntimo por el camino. El reparto se ve en pantalla <strong>antes</strong> de guardar.</p>
-
-  <h3>Un pago que es solo una vez al año</h3>
-  <p>Un seguro que se paga entero en agosto <strong>no es un fijo</strong>: es un <a href="#ambitos">gasto Extra</a>. Un fijo es algo que se repite dentro del año.</p>
-</section>
-
-<section id="ambitos">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-etiquetas"/></svg>Mensual, Extra y Deuda</h2>
-  <p class="entradilla">Casi todo es Mensual y no hay que tocar nada. Los otros dos están en «Más opciones», dentro de Añadir.</p>
-
-  <div class="rejilla">
-    <div class="ficha">
-      <h4>Mensual</h4>
-      <p>El día a día: la compra, la gasolina, un café. <strong>Cuenta en lo gastado del mes</strong> y baja lo que sobra. Es el 95 % de los casos y viene puesto de fábrica.</p>
+  <div class="par derecha">
+    <div>
+      <h3>Poner lo que ha venido</h3>
+      <p>En <span class="ruta">Consultar → Mes</span> se despliega <b>Gastos fijos</b> y se toca la línea. Escribes <b>el importe completo del recibo</b> y Cashtor lo reparte:</p>
+      <div class="reparto">
+        <div class="imp"><b>30,59 €</b><small>el recibo</small></div>
+        <span class="flecha">→</span>
+        <div class="imp"><b>15,30 €</b><small>agosto</small></div>
+        <span class="flecha">+</span>
+        <div class="imp"><b>15,29 €</b><small>septiembre</small></div>
+      </div>
+      <p>El céntimo que no se parte por la mitad se lo queda <b>el primer mes</b>. El reparto se ve <b>antes</b> de guardar.</p>
+      <p>Un seguro que se paga entero una vez al año <b>no es un fijo</b>: es un gasto Extra.</p>
     </div>
-    <div class="ficha">
-      <h4>Extra</h4>
-      <p>Lo gordo y de una vez: un viaje, una lavadora, la paga de un seguro anual. <strong>No entra en el mes</strong> — entra directamente en el ahorro del año, para no reventar el gasto diario de una semana cualquiera.</p>
-    </div>
-    <div class="ficha">
-      <h4>Deuda</h4>
-      <p>Dinero que has adelantado y te tienen que devolver. Sale aparte, con su total, y se marca como saldada de un toque cuando te lo devuelven.</p>
+    <div class="movil">
+      <div class="barra">agosto de 2026</div>
+      <div class="cuerpo">
+        <div class="mini">Ingresos</div>
+        <div class="fila"><span>Nómina</span><span class="verde">+1.850,00 €</span></div>
+        <div class="mini" style="margin-top:10px">Gastos fijos ▾</div>
+        <div class="fila"><span>Alquiler</span><span>−650,00 €</span></div>
+        <div class="fila"><span>Luz</span><span>−48,20 €</span></div>
+        <div class="fila" style="background:var(--app-sup);border-radius:8px;padding:6px 8px">
+          <span><b>Agua</b><br><span class="d" style="font-size:.66rem">tócalo para poner el importe</span></span>
+          <span>−15,30 €</span>
+        </div>
+        <div class="mini" style="margin-top:10px">Martes 4 — 32,40 €</div>
+        <div class="fila"><span>Mercadona</span><span>−24,90 €</span></div>
+        <div class="fila"><span>Panadería</span><span>−7,50 €</span></div>
+      </div>
+      <div class="pie">
+        <span><i>＋</i>Añadir</span><span class="on"><i>📅</i>Consultar</span>
+        <span><i>✓</i>Revisión</span><span><i>📊</i>Estad.</span><span><i>⚙</i>Ajustes</span>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="huchas">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-hucha"/></svg>Huchas</h2>
-  <p class="entradilla">Botes personales, cada uno con su saldo.</p>
+<!-- ===================== ÁMBITOS ===================== -->
+<section id="ambitos" hidden>
+  <h2>Mensual, Extra y Deuda</h2>
+  <p class="sub">Casi todo es Mensual y no hay que tocar nada. Los otros dos están en «Más opciones».</p>
+
+  <div class="rejilla d">
+    <div class="ficha"><h4>Mensual</h4><p>El día a día: la compra, la gasolina, un café. <b>Cuenta en el mes</b> y baja lo que sobra. El 95 % de los casos.</p></div>
+    <div class="ficha"><h4>Extra</h4><p>Lo gordo y de una vez: un viaje, una lavadora, un seguro anual. <b>No entra en el mes</b>, va directo al ahorro del año.</p></div>
+    <div class="ficha"><h4>Deuda</h4><p>Dinero que has adelantado y te tienen que devolver. Sale aparte y se marca como saldada de un toque.</p></div>
+  </div>
+
+  <div class="caja" style="margin-top:18px">
+    <p><b>¿Por qué Extra no cuenta en el mes?</b> Porque una lavadora de 400 € en marzo dejaría el gasto diario de esa semana por los suelos y no diría nada útil. Va al ahorro del año, que es donde de verdad se nota.</p>
+  </div>
+</section>
+
+<!-- ===================== HUCHAS ===================== -->
+<section id="huchas" hidden>
+  <h2>Huchas</h2>
+  <p class="sub">Botes personales, cada uno con su saldo.</p>
 
   <p class="clave">Una hucha es un libro aparte: su dinero no es de la familia y no entra en el ahorro del hogar.</p>
 
-  <p>Es justo para lo que sirve: si ese dinero contara en el ahorro común, no haría falta la hucha. Lo apuntado en una hucha no aparece ni en el mes ni entre los gastos del año — solo en su propia tarjeta, en <span class="ruta">Consultar → Huchas</span>.</p>
-  <p>El saldo que se ve es el de <strong>toda la vida de la hucha</strong>, no el de un año. Se dan de alta y de baja en <span class="ruta">Ajustes → Huchas</span>.</p>
+  <div class="par">
+    <div class="movil">
+      <div class="barra">Huchas</div>
+      <div class="cuerpo">
+        <div class="tarj"><div style="display:flex;justify-content:space-between">
+          <b>Viaje a Japón</b><span class="verde">1.240,00 €</span></div>
+          <div class="d" style="font-size:.68rem">14 movimientos</div></div>
+        <div class="tarj"><div style="display:flex;justify-content:space-between">
+          <b>Caprichos</b><span class="verde">85,50 €</span></div>
+          <div class="d" style="font-size:.68rem">6 movimientos</div></div>
+      </div>
+      <div class="pie">
+        <span><i>＋</i>Añadir</span><span class="on"><i>📅</i>Consultar</span>
+        <span><i>✓</i>Revisión</span><span><i>📊</i>Estad.</span><span><i>⚙</i>Ajustes</span>
+      </div>
+    </div>
+    <div>
+      <p>Si ese dinero contara en el ahorro común, no haría falta la hucha. Lo apuntado en una <b>no aparece</b> ni en el mes ni entre los gastos del año: solo en su tarjeta.</p>
+      <p>El saldo que ves es el de <b>toda la vida de la hucha</b>, no el de un año. Se dan de alta y de baja en <span class="ruta">Ajustes → Huchas</span>.</p>
+      <p>Si todo vuestro dinero es común, no necesitas ninguna.</p>
+    </div>
+  </div>
 </section>
 
-<section id="privados">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-candado"/></svg>Gastos privados</h2>
-  <p class="entradilla">Un regalo de cumpleaños, los Reyes. Cosas que no se pueden ver dentro del propio hogar.</p>
+<!-- ===================== PRIVADOS ===================== -->
+<section id="privados" hidden>
+  <h2>Gastos privados</h2>
+  <p class="sub">Un regalo de cumpleaños, los Reyes. Lo que no se puede ver dentro de casa.</p>
 
   <p class="clave">Lo privado no se ve, pero sí se cuenta.</p>
 
-  <p>Al apuntar un gasto <strong>Extra</strong> aparece la casilla <strong>Privado</strong>. Marcándola:</p>
+  <div class="par derecha">
+    <div>
+      <div class="caja desliza">
+        <table>
+          <thead><tr><th></th><th>Quien lo apuntó</th><th>El resto</th></tr></thead>
+          <tbody>
+            <tr><th>La línea en la lista</th><td class="si">La ve, con candado</td><td class="no">No existe para él</td></tr>
+            <tr><th>El importe en los totales</th><td class="si">Cuenta</td><td class="si">Cuenta igual</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>No es que la pantalla lo esconda: <b>el dato no llega al móvil de la otra persona</b>. Y los totales no se calculan sumando lo que se ve, sino en el servidor, sumando el hogar entero.</p>
+      <p>Por eso el ahorro del año es <b>la misma cifra para todos</b> aunque cada uno vea listas distintas. Y por eso <b>un privado nunca sale en Revisión</b>, ni al que lo apuntó.</p>
+    </div>
+    <div class="movil">
+      <div class="barra">Más opciones</div>
+      <div class="cuerpo">
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <span class="pill off">Mensual</span><span class="pill">Extra</span><span class="pill off">Deuda</span>
+        </div>
+        <div class="campo"><b>Regalo Mamen</b></div>
+        <div class="campo"><b>75,99</b> €</div>
+        <div class="tarj" style="display:flex;align-items:center;gap:8px">
+          <span style="width:14px;height:14px;background:var(--verde);border-radius:3px;
+            display:grid;place-items:center;color:var(--crema);font-size:.6rem">✓</span>
+          <span><b>Privado</b><br><span class="d" style="font-size:.66rem">Solo lo verás tú</span></span>
+        </div>
+        <div class="boton">Guardar</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <div class="tarjeta desplazable">
-    <table>
-      <thead>
-        <tr><th></th><th>Quien lo apuntó</th><th>El resto del hogar</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>La línea en la lista</th>
-          <td class="si">La ve, con candado</td>
-          <td class="no">No existe para él</td>
-        </tr>
-        <tr>
-          <th>El importe en los totales</th>
-          <td class="si">Cuenta</td>
-          <td class="si">Cuenta igual</td>
-        </tr>
-      </tbody>
-    </table>
+<!-- ===================== REVISIÓN ===================== -->
+<section id="revision" hidden>
+  <h2>Revisión: cerrar el mes</h2>
+  <p class="sub">Cazar lo que no se apuntó, con los tickets y el extracto delante.</p>
+
+  <div class="par">
+    <div class="movil">
+      <div class="barra">julio de 2026 · 18 de 34</div>
+      <div class="cuerpo">
+        <div style="display:flex;gap:5px;margin-bottom:9px">
+          <span class="pill">Mes</span><span class="pill off">Extra</span>
+          <span class="pill off">Recibos</span><span class="pill off">Cuentas</span>
+        </div>
+        <div class="fila"><span>✅ Carrefour</span><span class="d">Tarjeta</span></div>
+        <div class="fila"><span>✅ Gasolina</span><span class="d">Tarjeta</span></div>
+        <div class="fila"><span>⬜ Panadería</span><span class="d">—</span></div>
+        <div class="fila"><span>⬜ Farmacia</span><span class="d">—</span></div>
+      </div>
+      <div class="pie">
+        <span><i>＋</i>Añadir</span><span><i>📅</i>Consultar</span>
+        <span class="on"><i>✓</i>Revisión</span><span><i>📊</i>Estad.</span><span><i>⚙</i>Ajustes</span>
+      </div>
+    </div>
+    <div>
+      <ol class="pasos">
+        <li><div><b>Se elige el mes</b><span>Por defecto, el último terminado. Uno en curso no se puede dar por revisado.</span></div></li>
+        <li><div><b>Se van marcando</b><span>Ordenados alfabéticamente, con un contador arriba.</span></div></li>
+        <li><div><b>Lo que falte, se apunta</b><span>En Añadir, como cualquier otro gasto.</span></div></li>
+        <li><div><b>El mes se cierra solo</b><span>Sin botón: cuando no queda ningún recibo a cero ni nada sin marcar.</span></div></li>
+      </ol>
+      <div class="caja" style="margin-top:16px">
+        <p><b>Lo que siempre se olvida:</b> los recibos se apuntan en el mes siguiente al que se pagan, así que <b>el cargo del recibo de julio está en el extracto de junio</b>.</p>
+      </div>
+      <p>Si no cuadras el mes con el banco, esta pestaña se puede quitar de en medio: <span class="ruta">Ajustes → El mes → Revisar el mes</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AJUSTES ===================== -->
+<section id="ajustes" hidden>
+  <h2>Ajustes</h2>
+  <p class="sub">Siete grupos, cada uno con su nombre.</p>
+
+  <div class="par derecha">
+    <div>
+      <dl>
+        <dt>Mi cuenta</dt><dd>Tu nombre, tu correo y tu contraseña.</dd>
+        <dt>Mi hogar</dt><dd>Quién está dentro, invitar, y las huchas, los fijos y los conceptos.</dd>
+        <dt>El mes</dt><dd>Qué día se genera el siguiente, cuánto apartar, y si quieres la pestaña Revisión.</dd>
+        <dt>Cómo se ve</dt><dd>La moneda y los temas. <b>El tema es de cada móvil</b>: no afecta a nadie más.</dd>
+        <dt>Ayuda</dt><dd>Esta guía y el tutorial del primer apunte.</dd>
+        <dt>Copia de seguridad</dt><dd>El Excel del año, y <b>restaurar</b> para volver a un día concreto.</dd>
+        <dt>La aplicación</dt><dd>La versión, y el estado de las copias automáticas.</dd>
+      </dl>
+    </div>
+    <div class="movil">
+      <div class="barra">Ajustes</div>
+      <div class="cuerpo" style="font-size:.74rem">
+        <div class="mini" style="color:var(--acento)">MI CUENTA</div>
+        <div class="fila"><span>Héctor</span><span class="d">✎</span></div>
+        <div class="fila"><span>Cambiar contraseña</span><span class="d">›</span></div>
+        <div class="mini" style="color:var(--acento);margin-top:9px">MI HOGAR</div>
+        <div class="fila"><span>Mi hogar</span><span class="d">›</span></div>
+        <div class="fila"><span>Huchas</span><span class="d">›</span></div>
+        <div class="fila"><span>Fijos</span><span class="d">›</span></div>
+        <div class="mini" style="color:var(--acento);margin-top:9px">CÓMO SE VE</div>
+        <div class="fila"><span>Moneda</span><span class="d">Euro (€)</span></div>
+        <div class="fila"><span>Temas</span><span class="d">Claro</span></div>
+      </div>
+      <div class="pie">
+        <span><i>＋</i>Añadir</span><span><i>📅</i>Consultar</span>
+        <span><i>✓</i>Revisión</span><span><i>📊</i>Estad.</span><span class="on"><i>⚙</i>Ajustes</span>
+      </div>
+    </div>
   </div>
 
-  <p style="margin-top:16px">Esto no es que la pantalla lo esconda: <strong>el dato no llega siquiera al móvil de la otra persona</strong>. Y los totales no se calculan sumando lo que se ve, sino en el servidor, sumando el hogar entero. Por eso el ahorro del año es <strong>la misma cifra para todos</strong> aunque cada uno vea listas distintas.</p>
-  <p>Solo se puede marcar en gastos <strong>Extra</strong>, y por eso <strong>un privado nunca aparece en Revisión</strong> — ni al que lo apuntó. Se puede quitar la marca cuando se quiera.</p>
+  <p class="clave" style="margin-top:20px">Todos los días se guarda sola una copia completa — y se guardan todas, no se pisan unas a otras.</p>
+  <p>El Excel es <em>para mirarlo</em>. La copia automática es <em>para volver</em>: en <span class="ruta">Restaurar una copia</span> eliges el día —hoy, ayer, hace tres días— y listo.</p>
 </section>
 
-<section id="revision">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-comprobar"/></svg>Revisión: cerrar el mes</h2>
-  <p class="entradilla">Cazar lo que no se apuntó, antes de dar el mes por bueno. Con los tickets y el extracto del banco delante.</p>
+<!-- ===================== DUDAS ===================== -->
+<section id="dudas" hidden>
+  <h2>Dudas rápidas</h2>
+  <p class="sub">Lo que más se pregunta.</p>
 
-  <ol class="pasos tarjeta">
-    <li><div><strong>Se elige el mes</strong><span>Por defecto, el último terminado. Un mes en curso no se puede dar por revisado: mañana entran apuntes nuevos.</span></div></li>
-    <li><div><strong>Se van marcando uno a uno</strong><span>Salen ordenados alfabéticamente, con un contador arriba: «18 de 34 revisados».</span></div></li>
-    <li><div><strong>Lo que falte, se apunta en Añadir</strong><span>Como cualquier otro gasto.</span></div></li>
-    <li><div><strong>El mes se cierra solo</strong><span>No hay botón. En cuanto no queda ningún recibo a cero ni nada sin marcar, queda revisado.</span></div></li>
-  </ol>
+  <div class="caja">
+    <dl>
+      <dt>Apunto sin cobertura, ¿se pierde?</dt>
+      <dd>No. Se guarda en el móvil y sube solo cuando haya conexión.</dd>
 
-  <p style="margin-top:16px"><strong>Lo que siempre se olvida:</strong> los recibos se apuntan en el mes siguiente al que se pagan, así que <strong>el cargo del recibo de julio está en el extracto de junio</strong>.</p>
-  <p>Si después de cerrarlo cambias algo de ese mes, la aplicación lo señala como <em>revisado con cambios</em>. Nada se bloquea nunca. Y si te lías, arriba a la derecha hay un botón para quitar todas las marcas y empezar de cero.</p>
-  <p>Si no cuadras el mes con el banco, esta pestaña se puede quitar de en medio: <span class="ruta">Ajustes → El mes → Revisar el mes</span>.</p>
-</section>
+      <dt>Mi pareja apunta algo, ¿cuándo lo veo?</dt>
+      <dd>En el momento, sin tirar de la pantalla.</dd>
 
-<section id="ajustes">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-ajustes"/></svg>Ajustes</h2>
-  <p class="entradilla">Por grupos, de arriba abajo.</p>
+      <dt>¿Por qué las líneas suman menos que el total?</dt>
+      <dd>Hay algún gasto privado de otra persona. El total lo cuenta; la línea no se ve.</dd>
 
-  <dl class="tarjeta">
-    <dt>Mi cuenta</dt>
-    <dd>Tu nombre, tu correo y tu contraseña.</dd>
-    <dt>Mi hogar</dt>
-    <dd>Quién está dentro, invitar a alguien, y las huchas, los fijos y los conceptos y grupos.</dd>
-    <dt>El mes</dt>
-    <dd>Qué día se genera el mes que viene, cuánto apartar cada mes, y si quieres o no la pestaña Revisión.</dd>
-    <dt>Cómo se ve</dt>
-    <dd>La moneda (euro, libra o dólar — <strong>solo cambia cómo se escribe el dinero</strong>, no convierte nada) y los temas, claro u oscuro. <strong>El tema es de cada móvil</strong>: no afecta a nadie más del hogar.</dd>
-    <dt>Ayuda</dt>
-    <dd>Esta guía y el tutorial del primer apunte.</dd>
-    <dt>Copia de seguridad</dt>
-    <dd>Todos los movimientos del año en un Excel, cuando quieras, y un recordatorio para que no se olvide. Y <strong>restaurar</strong>, para devolver el hogar a como estaba en una fecha.</dd>
-  </dl>
+      <dt>Me he equivocado de mes al apuntar</dt>
+      <dd>Tocas el apunte y cambias la fecha. Todo se recalcula solo.</dd>
 
-  <p class="clave" style="margin-top:20px">Además, todos los días se guarda sola una copia completa — y se guardan todas, no se pisan unas a otras.</p>
+      <dt>He borrado un concepto que usaba</dt>
+      <dd>Los apuntes viejos no se tocan. Se da de baja para que no salga al apuntar, pero su historial sigue entero.</dd>
 
-  <p>El Excel es <em>para mirarlo</em>: un año, en dos hojas, para abrirlo y buscar algo. La copia automática es <em>para volver</em>: lleva el hogar entero de todos los años —apuntes, recibos, conceptos, huchas y ajustes— y es la que se usa en <span class="ruta">Ajustes → Copia de seguridad → Restaurar una copia</span> si alguna vez hace falta.</p>
-</section>
+      <dt>¿Puede usarla un amigo?</dt>
+      <dd>Sí, pero <b>Cashtor es privada</b>: hace falta invitarle. Desde <span class="ruta">Ajustes → La aplicación → Administración</span>, y tendrá <b>su propio hogar</b>. Si quieres que lleve las cuentas <em>contigo</em>, invítale desde <span class="ruta">Ajustes → Mi hogar</span>.</dd>
 
-<section id="dudas">
-  <h2><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-pregunta"/></svg>Dudas rápidas</h2>
-
-  <dl class="tarjeta">
-    <dt>Apunto sin cobertura, ¿se pierde?</dt>
-    <dd>No. Se guarda en el móvil y sube solo en cuanto haya conexión. Mientras tanto, Ajustes dice cuántos apuntes quedan por subir.</dd>
-
-    <dt>Mi pareja apunta algo, ¿cuándo lo veo?</dt>
-    <dd>En el momento, sin tirar de la pantalla hacia abajo.</dd>
-
-    <dt>¿Por qué las líneas suman menos que el total?</dt>
-    <dd>Porque hay algún gasto privado de otra persona. El total lo cuenta; la línea no se ve. Es lo que hace que el ahorro sea el mismo número para todos.</dd>
-
-    <dt>Me he equivocado de mes al apuntar</dt>
-    <dd>Se toca el apunte y se cambia la fecha. Todo se recalcula solo.</dd>
-
-    <dt>He borrado un concepto que usaba</dt>
-    <dd>Los apuntes viejos no se tocan. Un concepto se da de baja para que no salga al apuntar, pero su historial sigue entero.</dd>
-
-    <dt>¿Se puede volver a un mes de hace años?</dt>
-    <dd>Hasta enero de 2026, que es el primer mes que hay. Antes de eso no hay nada que enseñar.</dd>
-
-    <dt>¿Puede usarla un amigo?</dt>
-    <dd>Sí, pero <strong>Cashtor es privada</strong>: para crear una cuenta hace falta que alguien le haya invitado con su correo. Se hace desde <span class="ruta">Ajustes → La aplicación → Administración → Invitar a alguien a Cashtor</span>, y esa persona tendrá <strong>su propio hogar</strong>, sin ver nada de tus cuentas. Si lo que quieres es que lleve las cuentas <em>contigo</em>, invítale desde <span class="ruta">Ajustes → Mi hogar</span>.</dd>
-
-    <dt>¿Cómo actualizo la aplicación?</dt>
-    <dd>Cuando hay una versión nueva, la propia aplicación avisa con una banda arriba. También se descarga desde <a href="https://cashtor.github.io/">cashtor.github.io</a>.</dd>
-  </dl>
+      <dt>¿Cómo actualizo?</dt>
+      <dd>La aplicación avisa con una banda arriba. También desde <a href="https://cashtor.github.io/">cashtor.github.io</a>.</dd>
+    </dl>
+  </div>
 </section>
 
 <footer>
   <p>Cashtor · <a href="https://cashtor.github.io/">cashtor.github.io</a></p>
-  <!-- **El enlace a la batería de pruebas, aquí y no en la app** (tarea
-       7.70, 29/08/2026). Se decidió no enlazarla "porque la guía es para
-       quien usa Cashtor y esto es para quien la prueba" — y entonces Héctor
-       preguntó lo obvio: *"¿cómo accedo a la URL, escribiéndola a mano?"*.
-       Es exactamente la pega que se le puso al enlace de GitHub una hora
-       antes: **escribir una dirección no es darla**.
-       Al pie de la guía se llega desde la app en tres toques, no hace falta
-       publicar versión, y a quien no le interese es una línea gris al final
-       de todo. -->
+  <!-- El enlace a la batería de pruebas (tarea 7.70). Se decidió no
+       enlazarla y Héctor preguntó lo obvio: *"¿cómo accedo, escribiéndola a
+       mano?"* — la misma pega que se le puso al enlace de GitHub una hora
+       antes. Al pie se llega desde la app en tres toques. -->
   <p style="font-size:.82rem">
     <a href="https://cashtor.github.io/pruebas.html">Batería de pruebas</a>
     — para repasar la aplicación antes de publicar una versión
   </p>
 </footer>
+</main>
 
-</div>
+<script>
+/* Las pestañas. **Se enseña una sección cada vez**, que es lo que quita el
+   scroll largo del que había que volver arriba. La elegida va en la
+   dirección (#apuntar), así que se puede enlazar una sección concreta y el
+   botón "atrás" del móvil funciona. */
+const SECCIONES = [
+  ['apuntar','Apuntar'], ['pestanas-app','Las pestañas'], ['sobra','Sobra'],
+  ['fijos','Fijos'], ['ambitos','Mensual y Extra'], ['huchas','Huchas'],
+  ['privados','Privados'], ['revision','Revisión'], ['ajustes','Ajustes'],
+  ['dudas','Dudas'],
+];
+
+const ul = document.getElementById('pestanas');
+for (const [id, texto] of SECCIONES) {
+  const li = document.createElement('li');
+  const b = document.createElement('button');
+  b.textContent = texto;
+  b.setAttribute('role', 'tab');
+  b.dataset.id = id;
+  b.addEventListener('click', () => mostrar(id, true));
+  li.appendChild(b);
+  ul.appendChild(li);
+}
+
+function mostrar(id, moverse) {
+  if (!SECCIONES.some(s => s[0] === id)) id = SECCIONES[0][0];
+  for (const [sid] of SECCIONES) {
+    document.getElementById(sid).hidden = sid !== id;
+  }
+  for (const b of ul.querySelectorAll('button')) {
+    const activo = b.dataset.id === id;
+    b.setAttribute('aria-selected', activo ? 'true' : 'false');
+    // Que la pestaña elegida se vea aunque la barra esté desplazada.
+    if (activo) b.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+  }
+  if (moverse) {
+    history.replaceState(null, '', '#' + id);
+    // Al cambiar de sección se vuelve arriba: si no, se entra a media página.
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+}
+
+window.addEventListener('hashchange', () => mostrar(location.hash.slice(1), false));
+mostrar(location.hash.slice(1) || SECCIONES[0][0], false);
+</script>
 </body>
 </html>
