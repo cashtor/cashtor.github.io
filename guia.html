@@ -335,39 +335,85 @@
 <!-- ===================== FIJOS ===================== -->
 <section id="fijos" hidden>
   <h2>Los fijos</h2>
-  <p class="sub">Recibos, nómina y pagas extra. Lo que llega siempre.</p>
+  <p class="sub">Recibos, nómina y pagas extra. Lo que llega siempre, sin apuntarlo a mano.</p>
 
-  <p class="clave">Cada cuánto llega se configura una vez en Ajustes. Lo que cuesta cada vez se cambia desde el propio mes.</p>
+  <p class="clave">Un fijo se configura una vez. A partir de ahí aparece solo, todos los meses que le toque.</p>
 
+  <h3>Al crearlo, dos preguntas</h3>
+  <p>Son independientes: cualquier fijo puede responder lo que quiera a cada una.</p>
+
+  <div class="rejilla d">
+    <div class="ficha">
+      <h4>1 · ¿Cuesta siempre lo mismo?</h4>
+      <p style="margin-bottom:8px"><b>Sí → constante.</b> Escribes el importe al crearlo y no vuelves a tocarlo. El alquiler, la cuota del móvil.</p>
+      <p><b>No → variable.</b> Llega siempre, pero por un importe distinto cada vez. La luz, el agua, la nómina. <b>Se crea sin importe</b> y se rellena cuando llega el recibo.</p>
+    </div>
+    <div class="ficha">
+      <h4>2 · ¿Llega cada varios meses?</h4>
+      <p style="margin-bottom:8px"><b>Cada mes → no hay nada más que decidir.</b> Es lo normal.</p>
+      <p><b>Cada 2, 6 o 12 meses → aparece si prorratearlo.</b> Es la única pregunta que confunde, y va aquí abajo.</p>
+    </div>
+  </div>
+
+  <h3>Prorratear, o no</h3>
   <div class="par derecha">
     <div>
-      <h3>Poner lo que ha venido</h3>
-      <p>En <span class="ruta">Consultar → Mes</span> se despliega <b>Gastos fijos</b> y se toca la línea. Escribes <b>el importe completo del recibo</b> y Cashtor lo reparte:</p>
-      <div class="reparto">
-        <div class="imp"><b>30,59 €</b><small>el recibo</small></div>
-        <span class="flecha">→</span>
-        <div class="imp"><b>15,30 €</b><small>agosto</small></div>
-        <span class="flecha">+</span>
-        <div class="imp"><b>15,29 €</b><small>septiembre</small></div>
+      <p>Solo sale cuando el fijo llega <b>cada varios meses</b>.</p>
+      <div class="caja">
+        <dl>
+          <dt>Apagado · el importe cae entero en su mes</dt>
+          <dd>El seguro del coche: 400 € en marzo son 400 € de marzo, y los otros once meses no llevan nada. <b>Así viene de fábrica.</b></dd>
+          <dt>Encendido · el importe se reparte</dt>
+          <dd>El agua: un recibo de 30,59 € cada dos meses <em>cubre</em> esos dos meses, así que la mitad va a cada uno y ninguno se dispara.</dd>
+        </dl>
       </div>
-      <p>El céntimo que no se parte por la mitad se lo queda <b>el primer mes</b>. El reparto se ve <b>antes</b> de guardar.</p>
-      <p>Un seguro que se paga entero una vez al año <b>no es un fijo</b>: es un gasto Extra.</p>
+      <p><b>La pregunta no es cuándo se paga, sino qué cubre.</b> El seguro se paga de golpe y protege todo el año, pero el gasto lo notas en marzo: apagado. El agua cubre justo los dos meses que le tocan: encendido.</p>
+    </div>
+    <div>
+      <div class="caja" style="margin-bottom:10px">
+        <p style="margin:0 0 8px"><b>Encendido</b> · agua, cada 2 meses</p>
+        <div class="reparto" style="margin:0">
+          <div class="imp"><b>30,59 €</b><small>el recibo</small></div>
+          <span class="flecha">→</span>
+          <div class="imp"><b>15,30 €</b><small>agosto</small></div>
+          <span class="flecha">+</span>
+          <div class="imp"><b>15,29 €</b><small>septiembre</small></div>
+        </div>
+      </div>
+      <div class="caja">
+        <p style="margin:0 0 8px"><b>Apagado</b> · seguro, cada 12 meses</p>
+        <div class="reparto" style="margin:0">
+          <div class="imp"><b>400,00 €</b><small>el recibo</small></div>
+          <span class="flecha">→</span>
+          <div class="imp"><b>400,00 €</b><small>marzo</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Poner lo que ha venido</h3>
+  <div class="par derecha">
+    <div>
+      <p>Solo hay que rellenar los <b>variables</b>: los constantes ya saben lo que valen.</p>
+      <p>En <span class="ruta">Consultar → Mes</span> se despliega <b>Gastos fijos</b> y se toca la línea. Escribes <b>el importe completo del recibo</b>, tal como viene, y si está prorrateado la aplicación lo reparte y enseña el resultado <b>antes</b> de guardar.</p>
+      <p>Mientras un recibo esté sin rellenar, su línea dice <b>Falta</b> y <b>el mes no se puede dar por revisado</b>. Es a propósito: un mes cerrado con el agua a cero no cuadra con nada.</p>
+      <h3>Cambiar o quitar uno</h3>
+      <p>En <span class="ruta">Ajustes → Fijos</span>. Corregir el importe de un constante se guarda sin más; <b>cambiar cada cuánto llega pregunta antes</b> y dice qué importes ya puestos se van a perder.</p>
+      <p><b>Dar de baja</b> deja de generarlo de aquí en adelante y conserva el historial. <b>Borrar</b>, que se lleva también el pasado, pregunta dos veces.</p>
     </div>
     <div class="movil">
       <div class="barra">agosto de 2026</div>
       <div class="cuerpo">
         <div class="mini">Ingresos</div>
-        <div class="fila"><span>Nómina</span><span class="verde">+1.850,00 €</span></div>
+        <div class="fila"><span>Nómina <span class="d" style="font-size:.62rem">variable</span></span><span class="verde">+1.850,00 €</span></div>
         <div class="mini" style="margin-top:10px">Gastos fijos ▾</div>
-        <div class="fila"><span>Alquiler</span><span>−650,00 €</span></div>
-        <div class="fila"><span>Luz</span><span>−48,20 €</span></div>
+        <div class="fila"><span>Alquiler <span class="d" style="font-size:.62rem">constante</span></span><span>−650,00 €</span></div>
+        <div class="fila"><span>Luz <span class="d" style="font-size:.62rem">variable</span></span><span>−48,20 €</span></div>
         <div class="fila" style="background:var(--app-sup);border-radius:8px;padding:6px 8px">
-          <span><b>Agua</b><br><span class="d" style="font-size:.66rem">tócalo para poner el importe</span></span>
+          <span><b>Agua</b><br><span class="d" style="font-size:.62rem">variable · prorrateado</span></span>
           <span>−15,30 €</span>
         </div>
-        <div class="mini" style="margin-top:10px">Martes 4 — 32,40 €</div>
-        <div class="fila"><span>Mercadona</span><span>−24,90 €</span></div>
-        <div class="fila"><span>Panadería</span><span>−7,50 €</span></div>
+        <div class="fila"><span>Seguro <span class="d" style="font-size:.62rem">falta</span></span><span class="d">— €</span></div>
       </div>
       <div class="pie">
         <span><i>＋</i>Añadir</span><span class="on"><i>📅</i>Consultar</span>
@@ -376,8 +422,6 @@
     </div>
   </div>
 </section>
-
-<!-- ===================== ÁMBITOS ===================== -->
 <section id="ambitos" hidden>
   <h2>Mensual, Extra y Deuda</h2>
   <p class="sub">Casi todo es Mensual y no hay que tocar nada. Los otros dos están en «Más opciones».</p>
