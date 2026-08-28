@@ -124,7 +124,7 @@
     <div class="fallo" id="fallo" hidden></div>
   </form>
 
-  <!-- Descarga directa, sin pasar por GitHub (Héctor, 22/08/2026). Funciona
+  <!-- Descarga directa, sin pasar por GitHub (22/08/2026). Funciona
        porque los archivos se llaman SIEMPRE igual, sin el número de versión:
        `releases/latest/download/<nombre>` sirve el de la última Release, sea
        la que sea. Si algún día se les pone la versión al nombre, estos dos
@@ -234,7 +234,7 @@
     enlaceGastado();
   } else if (tipo === 'recovery' && token) {
     // Sin frase debajo del título: los dos campos ya se explican solos
-    // (Héctor, 21/08/2026 — misma preferencia minimalista de la decisión 63).
+    // (21/08/2026 — misma preferencia minimalista de la decisión 63).
     pintar('🔑', 'acento', 'Elige una contraseña nueva', '');
     formulario.hidden = false;
     clave.focus();
@@ -316,8 +316,8 @@
       'Ya puedes volver a Cashtor y entrar con tu correo y tu contraseña.');
   } else {
     // Alguien ha llegado aquí escribiendo la dirección a mano, y esa es la
-    // dirección más corta que hay: **es la que Héctor va a decir en voz alta
-    // cuando un amigo le pregunte dónde se baja la aplicación** (22/08/2026).
+    // dirección más corta que hay: **es la que se dice en voz alta
+    // cuando alguien pregunta dónde se baja la aplicación** (22/08/2026).
     // Antes ponía "esta página solo sirve para confirmar cuentas", que no le
     // servía de nada a quien llegaba aquí a propósito.
     // **Los pasos cambian segun el aparato**: decirle a alguien que entra
