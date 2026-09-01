@@ -6,111 +6,139 @@
 <meta name="robots" content="noindex">
 <title>Cashtor</title>
 <style>
+  /* **El mismo aspecto que la entrada de la aplicación** (tarea 7.110,
+     01/09/2026). Héctor: *"las páginas de cuenta creada, cambio de contraseña
+     y eso, todas dales el mismo aspecto que el login de la app"*.
+
+     Estas páginas se ven **en el mismo minuto** que la aplicación —se pulsa
+     el enlace del correo y se vuelve a entrar—, y hasta hoy eran una tarjeta
+     gris de navegador: parecían de otro sitio, justo cuando lo que hace falta
+     es confiar en que el enlace era el bueno.
+
+     Los colores son los de `Paleta` en `lib/core/tema.dart`, escritos a mano
+     porque aquí no hay nada que los importe. Si cambia la paleta, cambian
+     aquí. */
   :root {
-    color-scheme: light dark;
-    --fondo: #f6f7f9;
-    --tarjeta: #ffffff;
-    --texto: #1a1c1e;
-    --suave: #5a5f66;
-    --borde: #d8dce1;
-    --campo: #ffffff;
-    --acento: #2f6f4f;
-    --acento-texto: #ffffff;
-    --aviso: #8a5a00;
+    --menta: #00BFA5;
+    --nieve: #F7F9FB;
+    --pino: #214E34;
+    --mostaza: #DBAC3A;
+    --lago: #7DD3FB;
+    --tinta: #0A1209;
+    --suave: #5b7a68;
     --error: #b3261e;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --fondo: #16181b;
-      --tarjeta: #1f2226;
-      --texto: #e7e9ec;
-      --suave: #a9b0b8;
-      --borde: #3a3f46;
-      --campo: #16181b;
-      --acento: #6fbf8e;
-      --acento-texto: #10281c;
-      --aviso: #e0b050;
-      --error: #f2b8b5;
-    }
-  }
+  /* **Sin modo oscuro, como la aplicación** (tarea 7.108): tenía un bloque
+     `prefers-color-scheme` y se ha ido con él. Un solo aspecto. */
   * { box-sizing: border-box; }
   body {
     margin: 0; min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     padding: 24px;
-    background: var(--fondo); color: var(--texto);
+    background-color: var(--menta);
+    background-image: url("fondo-login.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--nieve);
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     line-height: 1.55;
-  }
-  main {
-    width: 100%; max-width: 460px;
-    background: var(--tarjeta);
-    border: 1px solid var(--borde);
-    border-radius: 16px;
-    padding: 32px 28px;
     text-align: center;
   }
-  .emoji { font-size: 56px; line-height: 1; }
-  h1 { font-size: 1.5rem; margin: 16px 0 8px; }
+  /* El logotipo, como en la entrada. Con `onerror` se esconde solo: si el
+     PNG faltara, la página tiene que seguir sirviendo igual — es la única
+     que hay para cambiar una contraseña. */
+  .marca { width: 100%; max-width: 460px; }
+  .marca img { width: 190px; max-width: 60%; height: auto; }
+  .emoji { font-size: 56px; line-height: 1; margin-top: 8px; }
+  /* **El título va SIEMPRE en blanco**, gane o falle. Lleva una clase
+     (`acento`, `aviso`) que antes le cambiaba el color, y ahora vive sobre el
+     turquesa: cualquier color que no sea la nieve se apaga ahí. Lo que dice
+     cómo ha ido es el emoji de encima y la frase de la tarjeta, igual que en
+     la aplicación, donde `TituloDeEntrada` tampoco cambia de color nunca. */
+  h1, h1.acento, h1.aviso {
+    font-size: 1.5rem; margin: 12px 0 8px;
+    color: var(--nieve); font-weight: 700;
+  }
+  /* **La tarjeta blanca**, igual que `TarjetaDeEntrada`: lo que hay que leer
+     de verdad no puede ir en blanco sobre el turquesa, que mide 2,21 y
+     encima con el dibujo cambiando de tono debajo de cada letra. */
+  main {
+    width: 100%; max-width: 460px;
+    background: var(--nieve);
+    color: var(--pino);
+    border-radius: 20px;
+    padding: 24px 22px;
+    margin-top: 16px;
+  }
   p { margin: 0 0 12px; color: var(--suave); }
-  p.principal { color: var(--texto); }
+  p.principal { color: var(--pino); }
+  main :last-child { margin-bottom: 0; }
   .pasos {
     margin-top: 20px; padding: 16px;
-    background: var(--fondo); border-radius: 12px; text-align: left;
+    background: rgba(125, 211, 251, .18);
+    border-radius: 14px; text-align: left;
   }
   .pasos ol { margin: 0; padding-left: 20px; }
-  .pasos li { margin-bottom: 6px; color: var(--suave); }
+  .pasos li { margin-bottom: 6px; color: var(--pino); }
   .pasos li:last-child { margin-bottom: 0; }
   form { margin-top: 20px; text-align: left; }
-  label { display: block; font-size: .9rem; margin-bottom: 6px; }
-  input[type=password] {
-    width: 100%; padding: 12px 14px; margin-bottom: 16px;
-    font-size: 1rem; font-family: inherit;
-    color: var(--texto); background: var(--campo);
-    border: 1px solid var(--borde); border-radius: 10px;
+  label {
+    display: block; font-size: .9rem; margin-bottom: 6px;
+    font-weight: 600; color: var(--pino);
   }
-  input[type=password]:focus { outline: 2px solid var(--acento); outline-offset: 1px; }
-  button {
-    width: 100%; padding: 14px; font-size: 1rem; font-family: inherit;
-    font-weight: 600; cursor: pointer;
-    color: var(--acento-texto); background: var(--acento);
-    border: none; border-radius: 10px;
+  input[type=password] {
+    width: 100%; padding: 14px; margin-bottom: 16px;
+    font-size: 1rem; font-family: inherit;
+    color: var(--pino); background: #ffffff;
+    border: 1px solid rgba(33, 78, 52, .25); border-radius: 16px;
+  }
+  input[type=password]:focus { outline: 2px solid var(--menta); outline-offset: 1px; }
+  /* **El botón, el mismo que "Entrar"**: mostaza, en pastilla y con sombra.
+     Ver `BotonPrincipal` en `marco_de_entrada.dart`. */
+  button, a.descarga {
+    display: block; width: 100%; padding: 15px;
+    font-size: 1.06rem; font-family: inherit; font-weight: 700;
+    cursor: pointer; text-align: center; text-decoration: none;
+    color: var(--nieve); background: var(--mostaza);
+    border: none; border-radius: 999px;
+    box-shadow: 0 6px 14px rgba(10, 18, 9, .35);
   }
   button[disabled] { opacity: .6; cursor: default; }
-  /* Los botones de descarga son enlaces, no `button`: tienen que poder
-     abrirse en otra pestaña y copiarse con el botón derecho. */
-  a.descarga {
-    display: block; margin-top: 12px; padding: 14px;
-    font-size: 1rem; font-weight: 600; text-decoration: none;
-    color: var(--acento-texto); background: var(--acento);
-    border-radius: 10px;
-  }
-  /* El aparato desde el que NO se está entrando. Sigue estando a la vista
-     —desde el móvil se querrá a veces el de Windows, y al revés— pero sin
-     competir con el que casi seguro se busca. */
+  a.descarga { margin-top: 12px; }
+  /* El aparato desde el que NO se está entrando: el botón de contorno de la
+     entrada (`BotonSecundario`). Va sobre la tarjeta blanca, así que el
+     contorno es pino y no nieve. */
   a.descarga.otra {
-    color: var(--acento); background: transparent;
-    border: 1px solid var(--borde); font-weight: 500;
+    color: var(--pino); background: transparent;
+    border: 2px solid var(--pino); font-weight: 700;
+    box-shadow: none;
   }
   #descargas { margin-top: 20px; }
-  /* El aviso de que hace falta invitación, bajo los botones de descarga. */
   .aviso-privada {
     margin-top: 16px; margin-bottom: 0;
     font-size: .9rem; color: var(--suave);
   }
   .fallo {
-    margin-top: 14px; padding: 12px; border-radius: 10px;
-    background: var(--fondo); color: var(--error); font-size: .92rem;
+    margin-top: 14px; padding: 12px; border-radius: 14px;
+    background: #ffe9e7; color: var(--error); font-size: .92rem;
   }
-  .acento { color: var(--acento); }
-  .aviso { color: var(--aviso); }
+  .acento { color: var(--pino); font-weight: 600; }
+  .aviso { color: #8a5a00; }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
+<!-- El logotipo y el título van FUERA de la tarjeta, en blanco sobre el
+     turquesa, igual que en crear cuenta y en crear el hogar. La tarjeta
+     blanca es solo para lo que hay que leer con calma. -->
+<div class="marca">
+  <img src="cashtor.png" alt="Cashtor" onerror="this.style.display='none'">
+</div>
+<div class="emoji" id="emoji">⏳</div>
+<h1 id="titulo">Un momento…</h1>
 <main>
-  <div class="emoji" id="emoji">⏳</div>
-  <h1 id="titulo">Un momento…</h1>
   <p class="principal" id="mensaje"></p>
 
   <div class="pasos" id="pasos" hidden><ol id="lista"></ol></div>
