@@ -55,8 +55,9 @@
   /* **El título va SIEMPRE en blanco**, gane o falle. Lleva una clase
      (`acento`, `aviso`) que antes le cambiaba el color, y ahora vive sobre el
      turquesa: cualquier color que no sea la nieve se apaga ahí. Lo que dice
-     cómo ha ido es el emoji de encima y la frase de la tarjeta, igual que en
-     la aplicación, donde `TituloDeEntrada` tampoco cambia de color nunca. */
+     cómo ha ido es el emoji de encima —cuando lo hay— y la frase de la
+     tarjeta, igual que en la aplicación, donde `TituloDeEntrada` tampoco
+     cambia de color nunca. */
   h1, h1.acento, h1.aviso {
     font-size: 1.5rem; margin: 12px 0 8px;
     color: var(--nieve); font-weight: 700;
@@ -209,7 +210,16 @@
   var windows = document.getElementById('windows');
 
   function pintar(icono, clase, tit, texto, puntos) {
-    emoji.textContent = icono;
+    // **Sin emoji cuando el icono es vacio** (tarea 7.112, 01/09/2026).
+    // Hector: *"en la web has puesto los dos logos, el anterior que era un
+    // castor marron y el nuevo logotipo; quita el castor anterior"*.
+    //
+    // El castor del emoji venia de cuando esta pagina no tenia logotipo. Al
+    // ponerle el de la aplicacion (tarea 7.110) quedaron los dos castores,
+    // uno encima del otro y de estilos distintos. Los emojis que quedan
+    // -llave, sobre, enlace- no son el castor: dicen que ha pasado.
+    emoji.textContent = icono || '';
+    emoji.hidden = !icono;
     titulo.textContent = tit;
     titulo.className = clase || '';
     mensaje.textContent = texto || '';
@@ -296,7 +306,7 @@
       }).then(function (res) {
         if (res.ok) {
           formulario.hidden = true;
-          pintar('🦫', 'acento', '¡Contraseña cambiada!', '');
+          pintar('', 'acento', '¡Contraseña cambiada!', '');
           return;
         }
         var m = (res.cuerpo && (res.cuerpo.msg || res.cuerpo.message)) || '';
@@ -333,14 +343,14 @@
         'la otra dirección y pulsa también su enlace: hasta entonces sigues ' +
         'entrando en Cashtor con el correo de siempre.');
     } else {
-      pintar('🦫', 'acento', '¡Correo cambiado!',
+      pintar('', 'acento', '¡Correo cambiado!',
         'Ya puedes entrar en Cashtor con tu correo nuevo. La contraseña es ' +
         'la misma de antes.');
     }
   } else if (token) {
     // Registro confirmado (`type=signup`), o cualquier otro enlace que haya
     // dejado una sesión válida.
-    pintar('🦫', 'acento', '¡Cuenta confirmada!',
+    pintar('', 'acento', '¡Cuenta confirmada!',
       'Ya puedes volver a Cashtor y entrar con tu correo y tu contraseña.');
   } else {
     // Alguien ha llegado aquí escribiendo la dirección a mano, y esa es la
@@ -357,8 +367,11 @@
     // escritorio de una pagina, y sin este orden saldria el ZIP.
     var esWindows = !esAndroid && /windows/i.test(navigator.userAgent);
 
-    pintar('🦫', 'acento', 'Cashtor',
-      'Las cuentas de casa, apuntadas en dos toques.',
+    // **El título no repite "Cashtor"** (tarea 7.112): el logotipo de arriba
+    // ya lleva la palabra escrita dentro, así que ponerla otra vez debajo la
+    // decía dos veces seguidas. Aquí el título es lo que hace la aplicación.
+    pintar('', 'acento', 'Las cuentas de casa, apuntadas en dos toques',
+      '',
       esWindows
         ? [
             'Descarga el instalador y ábrelo.',
